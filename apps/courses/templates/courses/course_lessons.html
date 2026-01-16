@@ -4,80 +4,76 @@
 {% block title %} Lecciones {% endblock title %}
 
 {% block custom_styles %}
-    <link rel="stylesheet" href="{% static "css/lessons.css" %}">
+  <link rel="stylesheet" href="{% static "css/lessons.css" %}">
 {% endblock custom_styles %}
 
 {% block content %}
 
-    <!-- HEADER SUPERIOR -->
-    <header class="topbar">
-        <div class="acciones">
-            <div class="back-link"> <button class="discusiones">← Ve al panel de control</button></div>
+  <!-- HEADER SUPERIOR -->
+  <header class="topbar">
+    <div class="acciones">
+      <div class="back-link"> <button class="discusiones">&larr; Ve al panel de control</button></div>
 
-        </div>
-        <div class="logo"><img src="{% static "images/devilearn.png" %}" alt="Logo devilearn"></div>
-    </header>
+    </div>
+    <div class="logo"><img src="{% static "images/devilearn.png" %}" alt="Logo devilearn"></div>
+  </header>
 
-    <!-- LAYOUT PRINCIPAL -->
-    <div class="layout">
-          <!-- SIDEBAR IZQUIERDA -->
-      <aside class="sidebar">
-
-
-            <h1 class="course-title">{{ lesson.course_title }}</h1>
-            <p class="progress">{{ lesson.course_progress }}% completado</p>
+  <!-- LAYOUT PRINCIPAL -->
+  <div class="layout">
+    <!-- SIDEBAR IZQUIERDA -->
+    <aside class="sidebar">
 
 
-        <input class="lesson-search" placeholder="Buscar...">
-        <option>Buscar por título de lección</option>
-      </select>
+      <h1 class="course-title">{{ lesson.course_title }}</h1>
+      <p class="progress">{{ lesson.course_progress }}% completado</p>
+
+
+      <input class="lesson-search" placeholder="Buscar...">
+      <option>Buscar por título de lección</option>
+    </select>
 
             <!-- SECCIONES -->
-            <div class="accordion">
+    <div class="accordion">
 
-                {% for section in lesson.course_content %}
-                
-                     <div class="accordion-item">
-                        <button class="accordion-header">Sección {{ section.id }}: {{ section.name }} <span>{{ section.complete_lessons }} / {{ section.total_lessons }}</span></button>
-                        <div class="accordion-content">
-                            <ul>
-                                
-                                {% for lesson in section.lessons %}
-                                    <li>{{ lesson.name }}</li>
-                                {% endfor %}
+      {% for section in lesson.course_content %}
 
-                            </ul>
-                        </div>
-                    </div>
+        <div class="accordion-item">
+          <button class="accordion-header">Sección {{ section.id }}: {{ section.name }} <span>{{ section.complete_lessons }} / {{ section.total_lessons }}</span></button>
+          <div class="accordion-content">
+            <ul>
 
-                {% endfor %}
+              {% for lesson in section.lessons %}
+                <li>{{ lesson.name }}</li>
+              {% endfor %}
 
-            </div>
-        </aside>
+            </ul>
+          </div>
+        </div>
+
+      {% endfor %}
+
+    </div>
+  </aside>
 
     <!-- CONTENIDO PRINCIPAL (VIDEO) -->
-    <main class="main-content">
-      <div class="content-header">Introducción al curso</div>
-      <div class="video-wrapper">
-        <video controls
-               poster="https://placehold.co/800x450?text=Este+curso+est%C3%A1+en+proceso+de+construcci%C3%B3n">
-          <source src="video-demo.mp4" type="video/mp4">
-          Tu navegador no soporta videos.
-        </video>
-      </div>
-      <div class="bottom-bar">
-        <button class="btn-complete">COMPLETAR Y CONTINUAR →</button>
-      </div>
-    </main>
+  <main class="main-content">
+    <div class="content-header">Introducción al curso</div>
+    <div class="video-wrapper">
+      <video controls
+             poster="https://placehold.co/800x450?text=Este+curso+est%C3%A1+en+proceso+de+construcci%C3%B3n">
+        <source src="video-demo.mp4" type="video/mp4">
+        Tu navegador no soporta videos.
+      </video>
+    </div>
+    <div class="bottom-bar">
+      <button class="btn-complete">COMPLETAR Y CONTINUAR →</button>
+    </div>
+  </main>
 
   </div>
 
 {% endblock content %}
 
 {% block scripts %}
-    <script src="{% static "js/multimedia.js" %}"></script>
+  <script src="{% static "js/multimedia.js" %}"></script>
 {% endblock scripts %}
-
-</body>
-
-</html>
