@@ -3,65 +3,64 @@
 
 {% block title %}Cursos{% endblock title %}
 
-{% block custom_styles %} 
-    <link rel="stylesheet" href="{% static "css/styles.css" %}">
+{% block custom_styles %}
+  <link rel="stylesheet" href="{% static "css/styles.css" %}">
 {% endblock custom_styles %}
 
 {% block content %}
 
-    <div class="layout">
+  <div class="layout">
 
-        {% comment %} Sidebar {% endcomment %}
-        {% include "includes/sidebar.html" %}
+    {% comment %} Sidebar {% endcomment %}
+    {% include "includes/sidebar.html" %}
 
-        <!-- Main content -->
-        <div class="main-content">
-            
-            {% comment %} Header {% endcomment %}
-            {% include "includes/header.html" %}
-            
-            <!-- Aquí va el contenido de la página -->
-            <main>
-                <!-- === COURSE CARDS === -->
+    <!-- Main content -->
+    <div class="main-content">
 
-                <div class="carousel-wrapper">
-                    <div class="course-grid">
-                        <div class="course-grid">
+      {% comment %} Header {% endcomment %}
+      {% include "includes/header.html" %}
 
-                            {% for course in courses %}
-                            
-                                 <div class="course-card">
-                                    <a href="{% url "course_detail" %}">
-                                        <img src="{% static course.course_image %}" alt="Course Image" class="course-img" />
-                                        <div class="course-info">
-                                            <div class="course-rating">
-                                                <span class="tag beginner">{{ course.level }}</span>
-                                                <div class="course-meta">
-                                                    <span><i class="fa-solid fa-star"></i> {{ course.rating }}</span>
-                                                </div>
-                                            </div>
+      <!-- Aquí va el contenido de la página -->
+      <main>
+        <!-- === COURSE CARDS === -->
 
-                                            <h3 class="course-title">{{ course.course_title }}</h3>
-                                            <div class="author"><img src="{{ course.instructor_image }}"
-                                                    alt=""><span>{{ course.instructor }}</span></div>
-                                        </div>
+        <div class="carousel-wrapper">
+          <div class="course-grid">
+            <div class="course-grid">
 
-                                    </a>
-                                </div>
-                                
-                            {% endfor %}                       
+              {% for course in courses %}
 
+                <div class="course-card">
+                  <a href="{% url "course_detail" %}">
+                    <img src="{% static course.course_image %}" alt="Course Image" class="course-img" />
+                    <div class="course-info">
+                      <div class="course-rating">
+                        <span class="tag beginner">{{ course.level }}</span>
+                        <div class="course-meta">
+                          <span><i class="fa-solid fa-star"></i> {{ course.rating }}</span>
                         </div>
+                      </div>
+
+                      <h3 class="course-title">{{ course.course_title }}</h3>
+                      <div class="author"><img src="{{ course.instructor_image }}"
+                                               alt=""><span>{{ course.instructor }}</span></div>
                     </div>
+
+                  </a>
                 </div>
 
-            </main>
+              {% endfor %}
+
+            </div>
+          </div>
         </div>
+
+      </main>
     </div>
+  </div>
 
 {% endblock content %}
 
 {% block scripts %}
-    <script src="{% static "js/script.js" %}"></script>
+  <script src="{% static "js/script.js" %}"></script>
 {% endblock scripts %}
-    
