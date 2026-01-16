@@ -1,55 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
+{% load static %}
 
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Devilearn</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="./css/styles.css" />
-  </head>
+{% block title %}Profile{% endblock title %}
 
-  <body>
+{% block custom_styles %}
+    <link rel="stylesheet" href="{% static "css/styles.css" %}">
+{% endblock custom_styles %}
+
+{% block content %}
+
     <div class="layout">
 
-      <div class="sidebar">
-        <div class="logo">
-          <img src="./images/devilearn.png" alt="Logo">
-        </div>
-        <ul class="menu">
-          <li><a class="menu-option" href="index.html"><i
-            class="fa-solid fa-house icon"></i><span>Dashboard</span></a>
-          </li>
-          <li><a class="menu-option" href="courses.html"><i
-            class="fa-solid fa-chalkboard-user icon"></i><span>Cursos</span></a></li>
-
-
-        </ul>
-        <ul class="bottom-menu">
-          <li><a class="menu-option" href="profile.html"><i
-            class="fa-solid fa-user icon"></i><span>Perfil</span></a>
-          </li>
-          <li><a class="menu-option" href="#"><i class="fa-solid fa-question icon"></i><span>Soporte</span></a>
-          </li>
-          <li><a class="menu-option" href="#"><i class="fa-solid fa-gear icon"></i><span>Configuración</span></a>
-          </li>
-        </ul>
-      </div>
+        {% include "includes/sidebar.html" %}
 
         <!-- Main content -->
-      <div class="main-content">
-            <!-- Header -->
-        <div class="header">
-          <div class="search-box">
-            <i class="fa-solid fa-magnifying-glass icon"></i>
-            <input type="text" placeholder="Buscar..." />
-          </div>
-          <div class="header-right">
-            <div class="avatar">
-              <img src="https://randomuser.me/api/portraits/men/42.jpg" alt="User" />
-            </div>
-          </div>
-        </div>
+        <div class="main-content">
+            
+            {% include "includes/header.html" %}
 
             <!-- Aquí va el contenido de la página -->
         <main>
@@ -105,7 +72,9 @@
         </main>
       </div>
     </div>
-    <script src="./js/script.js"></script>
-  </body>
 
-</html>
+{% endblock content %}
+
+{% block scripts %}
+    <script src="{% static "js/script.js" %}"></script>
+{% endblock scripts %}
