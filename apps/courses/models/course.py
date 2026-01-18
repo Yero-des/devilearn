@@ -1,7 +1,6 @@
 from django.db import models
 from django.conf import settings
 from .category import Category
-from .course import CourseCategory
 
 class Course(models.Model):
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='owner_courses')
@@ -9,7 +8,7 @@ class Course(models.Model):
     slug = models.SlugField(unique=True)
     overview = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
-    category = models.ManyToManyField(Category, through=CourseCategory, related_name='courses')
+    category = models.ManyToManyField(Category, through='CourseCategory', related_name='courses')
     image = models.CharField()
     rating = models.PositiveIntegerField()
     level = models.PositiveIntegerField()
