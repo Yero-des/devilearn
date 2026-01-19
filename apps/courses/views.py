@@ -41,6 +41,7 @@ def course_list(request):
             'instructor_image': "https://randomuser.me/api/portraits/men/45.jpg"
         },
     ]
+    
     return render(request, "courses/courses.html", {
         'courses': courses
     })

@@ -11,7 +11,8 @@ class Progress(models.Model):
     
     class Meta:
         unique_together = ('user', 'course')
+        verbose_name = ('Progress')
+        verbose_name_plural = ('Progress')
     
     def __str__(self):
         return f"{self.user.username} - {self.course.title}: {self.progress}"
-    
