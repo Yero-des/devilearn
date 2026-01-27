@@ -5,6 +5,14 @@ from .models import (Category, Course, CourseCategory,
 class EnrollmentInline(admin.TabularInline):
     model = Enrollment
     extra = 1
+    
+    
+class CategoryInline(admin.TabularInline):
+    '''Tabular Inline View for Category'''
+
+    model = CourseCategory
+    extra = 1
+
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
@@ -15,6 +23,7 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):
+    inlines = [CategoryInline]
     prepopulated_fields = {'slug': ('title',)}
     list_display = ['title', 'created_at']
     list_filter = ['created_at']
