@@ -1,0 +1,264 @@
+[
+{
+  "model": "courses.category",
+  "pk": 1,
+  "fields": {
+    "name": "Web Development",
+    "slug": "web-development"
+  }
+},
+{
+  "model": "courses.category",
+  "pk": 2,
+  "fields": {
+    "name": "Software development",
+    "slug": "software-development"
+  }
+},
+{
+  "model": "courses.category",
+  "pk": 3,
+  "fields": {
+    "name": "Python",
+    "slug": "python"
+  }
+},
+{
+  "model": "courses.category",
+  "pk": 4,
+  "fields": {
+    "name": "Django",
+    "slug": "django"
+  }
+},
+{
+  "model": "courses.category",
+  "pk": 5,
+  "fields": {
+    "name": "Golang",
+    "slug": "golang"
+  }
+},
+{
+  "model": "courses.category",
+  "pk": 6,
+  "fields": {
+    "name": "Ruby",
+    "slug": "ruby"
+  }
+},
+{
+  "model": "courses.category",
+  "pk": 7,
+  "fields": {
+    "name": "Php",
+    "slug": "php"
+  }
+},
+{
+  "model": "courses.category",
+  "pk": 8,
+  "fields": {
+    "name": "JavaScript",
+    "slug": "javascript"
+  }
+},
+{
+  "model": "courses.category",
+  "pk": 9,
+  "fields": {
+    "name": "TypeScript",
+    "slug": "typescript"
+  }
+},
+{
+  "model": "courses.category",
+  "pk": 10,
+  "fields": {
+    "name": "React",
+    "slug": "react"
+  }
+},
+{
+  "model": "courses.category",
+  "pk": 11,
+  "fields": {
+    "name": "Angular",
+    "slug": "angular"
+  }
+},
+{
+  "model": "courses.category",
+  "pk": 12,
+  "fields": {
+    "name": "Vue.js",
+    "slug": "vue-js"
+  }
+},
+{
+  "model": "courses.category",
+  "pk": 13,
+  "fields": {
+    "name": "Node.js",
+    "slug": "node-js"
+  }
+},
+{
+  "model": "courses.category",
+  "pk": 14,
+  "fields": {
+    "name": "Backend Development",
+    "slug": "backend-development"
+  }
+},
+{
+  "model": "courses.category",
+  "pk": 15,
+  "fields": {
+    "name": "Frontend Development",
+    "slug": "frontend-development"
+  }
+},
+{
+  "model": "courses.category",
+  "pk": 16,
+  "fields": {
+    "name": "Full Stack Development",
+    "slug": "full-stack-development"
+  }
+},
+{
+  "model": "courses.category",
+  "pk": 17,
+  "fields": {
+    "name": "APIs REST",
+    "slug": "apis-rest"
+  }
+},
+{
+  "model": "courses.category",
+  "pk": 18,
+  "fields": {
+    "name": "GraphQL",
+    "slug": "graphql"
+  }
+},
+{
+  "model": "courses.category",
+  "pk": 19,
+  "fields": {
+    "name": "Databases",
+    "slug": "databases"
+  }
+},
+{
+  "model": "courses.category",
+  "pk": 20,
+  "fields": {
+    "name": "PostgreSQL",
+    "slug": "postgresql"
+  }
+},
+{
+  "model": "courses.category",
+  "pk": 21,
+  "fields": {
+    "name": "MySQL",
+    "slug": "mysql"
+  }
+},
+{
+  "model": "courses.category",
+  "pk": 22,
+  "fields": {
+    "name": "MongoDB",
+    "slug": "mongodb"
+  }
+},
+{
+  "model": "courses.category",
+  "pk": 23,
+  "fields": {
+    "name": "DevOps",
+    "slug": "devops"
+  }
+},
+{
+  "model": "courses.category",
+  "pk": 24,
+  "fields": {
+    "name": "Docker",
+    "slug": "docker"
+  }
+},
+{
+  "model": "courses.category",
+  "pk": 25,
+  "fields": {
+    "name": "Kubernetes",
+    "slug": "kubernetes"
+  }
+},
+{
+  "model": "courses.category",
+  "pk": 26,
+  "fields": {
+    "name": "Testing",
+    "slug": "testing"
+  }
+},
+{
+  "model": "courses.category",
+  "pk": 27,
+  "fields": {
+    "name": "Clean Code",
+    "slug": "clean-code"
+  }
+},
+{
+  "model": "courses.course",
+  "pk": 1,
+  "fields": {
+    "owner": 2,
+    "title": "Django",
+    "slug": "django",
+    "overview": "This is a short overview",
+    "created_at": "2026-01-19T03:19:36.514Z",
+    "image": "https://www.flaticon.es/icono-gratis/instructor_3410150",
+    "rating": 5,
+    "level": 3,
+    "duration": 400.0
+  }
+},
+{
+  "model": "courses.enrollment",
+  "pk": 1,
+  "fields": {
+    "user": 2,
+    "course": 1,
+    "enrolled_at": "2026-01-19T03:33:38.983Z"
+  }
+},
+{
+  "model": "courses.progress",
+  "pk": 1,
+  "fields": {
+    "user": 2,
+    "course": 1,
+    "status": "Iniciado",
+    "updated_at": "2026-01-19T03:36:12.821Z",
+    "progress": 4.3
+  }
+},
+{
+  "model": "courses.review",
+  "pk": 1,
+  "fields": {
+    "user": 1,
+    "course": 1,
+    "rating": 5,
+    "comment": "Me gustaria empezar de nuevo",
+    "created_at": "2026-01-21T12:29:10.918Z"
+  }
+}
+]

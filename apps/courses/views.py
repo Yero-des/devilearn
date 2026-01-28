@@ -8,7 +8,7 @@ def course_list(request):
             'id': 1,
             'level': 'Principiante',
             'rating': 4.8,
-            'course_title': "Python: Fundamentos hasta los detalles",
+            'course_title': "Python: Fundamentos hasta los detalles y mas",
             'instructor': "Alison Walsh",
             'course_image': "images/curso_1.jpg",
             'instructor_image': "https://randomuser.me/api/portraits/women/68.jpg"
@@ -41,6 +41,7 @@ def course_list(request):
             'instructor_image': "https://randomuser.me/api/portraits/men/45.jpg"
         },
     ]
+    
     return render(request, "courses/courses.html", {
         'courses': courses
     })
