@@ -12,6 +12,13 @@ class CategoryInline(admin.TabularInline):
 
     model = CourseCategory
     extra = 1
+    
+    
+class ModuleInline(admin.TabularInline):
+    '''Tabular Inline View for Module'''
+
+    model = Module
+    extra = 1
 
 
 @admin.register(Category)
@@ -23,7 +30,7 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):
-    inlines = [CategoryInline]
+    inlines = [ModuleInline, CategoryInline]
     prepopulated_fields = {'slug': ('title',)}
     list_display = ['title', 'created_at']
     list_filter = ['created_at']
