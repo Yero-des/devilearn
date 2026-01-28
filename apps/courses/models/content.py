@@ -2,6 +2,31 @@ from .module import Module
 from django.db import models
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
+from django.conf import settings
+
+class ItemBase(models.Model):
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='%(class)s_related', on_delete=models.CASCADE)
+    title = models.CharField(max_length=250)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        abstract = True
+        
+    def __str__(self):
+        return self.title
+
+class Text(ItemBase):
+    content = models.TextField()
+    
+class File(ItemBase):
+    file = models.FileField(upload_to='files')
+    
+class Image(ItemBase):
+    file = models.FileField(upload_to='images')
+    
+class Video(ItemBase):
+    file = models.FieldFile(upload_to='videos')
 
 class Content(models.Model):
     module = models.ForeignKey(Module, on_delete=models.CASCADE, related_name='contents')
