@@ -4,7 +4,7 @@
 {% block title %}Cursos{% endblock title %}
 
 {% block custom_styles %}
-  <link rel="stylesheet" href="{% static "css/styles.css" %}">
+  <link rel="stylesheet" href='{% static "css/styles.css" %}'>
 {% endblock custom_styles %}
 
 {% block content %}
@@ -30,8 +30,8 @@
             {% for course in courses %}
 
               <div class="course-card">
-                <a href="{% url "course_detail" %}">
-                  <img src="{% static course.course_image %}" alt="Course Image" class="course-img" />
+                <a href='{% url "course_detail" %}'>
+                  <img src="{{ course.image }}" alt="Course Image" class="course-img" />
                   <div class="course-info">
                     <div class="course-rating">
                       <span class="tag beginner">{{ course.level }}</span>
@@ -40,9 +40,9 @@
                       </div>
                     </div>
 
-                    <h3 class="course-title">{{ course.course_title }}</h3>
-                    <div class="author"><img src="{{ course.instructor_image }}"
-                                             alt=""><span>{{ course.instructor }}</span></div>
+                    <h3 class="course-title">{{ course.title }}</h3>
+                    <div class="author"><img src="{{ course.owner.instructor_profile.photo }}"
+                                             alt=""><span>{{ course.owner.get_full_name }}</span></div>
                   </div>
 
                 </a>

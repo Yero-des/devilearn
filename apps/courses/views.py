@@ -1,46 +1,18 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from .models.course import Course
+from django.db.models import Q
 
 # Create your views here.
 def course_list(request):
-    courses = [
-        {
-            'id': 1,
-            'level': 'Principiante',
-            'rating': 4.8,
-            'course_title': "Python: Fundamentos hasta los detalles y mas",
-            'instructor': "Alison Walsh",
-            'course_image': "images/curso_1.jpg",
-            'instructor_image': "https://randomuser.me/api/portraits/women/68.jpg"
-        },
-        {
-            'id': 2,
-            'level': 'Intermedio',
-            'rating': 5.0,
-            'course_title': "Guia para principiantes sobre gestión empresarial exitosa: Negocios y más",
-            'instructor': "Patty Kutch",
-            'course_image': "images/curso_2.jpg",
-            'instructor_image': "https://randomuser.me/api/portraits/women/20.jpg"
-        },
-        {
-            'id': 3,
-            'level': 'Principiante',
-            'rating': 5.0,
-            'course_title': "Una fascinante teoría de la probabilidad. Practica. Aplicación. Como superar ...",
-            'instructor': "Alonso Murray",
-            'course_image': "images/curso_3.jpg",
-            'instructor_image': "https://randomuser.me/api/portraits/men/32.jpg"
-        },
-        {
-            'id': 4,
-            'level': 'Principiante',
-            'rating': 5.0,
-            'course_title': "Introducción: Aprendizaje Automático y LLM. Implementación en Software Moderno.",
-            'instructor': "Gregory Harris",
-            'course_image': "images/curso_4.jpg",
-            'instructor_image': "https://randomuser.me/api/portraits/men/45.jpg"
-        },
-    ]
+    courses = Course.objects.all()
+    query = request.GET.get('q')
+    
+    if query: 
+        courses = courses.filter(
+            Q(title__icontains=query) |
+            Q(owner__first_name__icontains=query)
+        )
     
     return render(request, "courses/courses.html", {
         'courses': courses
