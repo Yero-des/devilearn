@@ -41,8 +41,10 @@
                     </div>
 
                     <h3 class="course-title">{{ course.title }}</h3>
-                    <div class="author"><img src="{{ course.owner.instructor_profile.photo }}"
-                                             alt=""><span>{{ course.owner.get_full_name }}</span></div>
+                    <div class="author">
+                      <img src="{{ course.owner.instructor_profile.photo }}" alt="">
+                      <span>{{ course.owner.get_full_name }}</span>
+                    </div>
                   </div>
 
                 </a>
@@ -51,6 +53,24 @@
             {% endfor %}
 
           </div>
+
+          <div class="paginator">
+            
+            
+            {% if courses.has_previous %}
+              <a href="?page=1&{{query_string}}">Primera</a>
+              <a href="?page={{courses.previous_page_number}}&{{query_string}}">Anterior</a>
+            {% endif %}
+            
+            <span>Pagina {{ courses.number }} de {{ courses.paginator.num_pages }}</span>
+
+            {% if courses.has_next %}
+              <a href="?page={{courses.next_page_number}}&{{query_string}}">Siguiente</a>
+              <a href="?page={{courses.paginator.num_pages}}&{{query_string}}">Ultima</a>
+            {% endif %}
+
+          </div>
+
         </div>
 
       </main>
@@ -60,5 +80,5 @@
 {% endblock content %}
 
 {% block scripts %}
-  <script src="{% static "js/script.js" %}"></script>
+  <script src="{% static 'js/script.js' %}"></script>
 {% endblock scripts %}

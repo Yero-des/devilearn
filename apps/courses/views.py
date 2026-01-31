@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from .models.course import Course
 from django.db.models import Q
+from django.core.paginator import Paginator
 
 # Create your views here.
 def course_list(request):
@@ -13,9 +14,22 @@ def course_list(request):
             Q(title__icontains=query) |
             Q(owner__first_name__icontains=query)
         )
+        
+    paginator = Paginator(courses, 8)
+    page_number = request.GET.get("page")
+    courses_obj = paginator.get_page(page_number)
     
+    query_params: list = request.GET.copy()
+    
+    if "page" in query_params:
+        query_params.pop("page")
+    
+    query_string = query_params.urlencode()    
+     
     return render(request, "courses/courses.html", {
-        'courses': courses
+        'query': query,
+        'courses': courses_obj,
+        'query_string': query_string
     })
 
 def course_detail(request):
