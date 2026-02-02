@@ -4,7 +4,7 @@
 {% block title %}{{ course.course_title }}{% endblock title %}
 
 {% block custom_styles %}
-  <link rel="stylesheet" href="{% static "css/styles.css" %}">
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 {% endblock custom_styles %}
 
 {% block content %}
@@ -30,42 +30,63 @@
             <h2>Contenido del curso</h2>
             <div class="accordion">
 
-              {% for section in course.course_content %}
+              {% for module in modules %}
 
                 <div class="accordion-item">
-                  <button class="accordion-header">Sección {{ section.id }}: {{ section.name }}</button>
+                  <button class="accordion-header">Sección {{ forloop.counter }}: {{ module.title }}</button>
                   <div class="accordion-content">
                     <ul>
 
-                      {% for lesson in section.lessons %}
+                      {% for content in module.contents.all %}
 
-                        <li><i class="fa-solid {% if lesson.type == 'video' %} fa-video {% else %} fa-file {% endif %}"></i>{{ lesson.name }}</li>
+                        <li>
+                          {% if content.content_type.model == "video" %}
+                            <i class="fa-solid fa-video"></i>
+                          {% elif content.content_type.model == "file" %}
+                            <i class="fa-solid fa-file"></i>
+                          {% elif content.content_type.model == "text" %}
+                            <i class="fa-solid fa-align-left"></i>
+                          {% elif content.content_type.model == "image" %}
+                            <i class="fa-solid fa-image"></i>
+                          {% endif %}
+
+                          {{ content.item.title }}
+                        </li>
+
+                      {% empty %}
+
+                        <li>Sin contenido aún</li>
 
                       {% endfor %}
                     </ul>
                   </div>
                 </div>
 
+              {% empty %}
+
+                <h3 style="color: #4a4a4a;">Sin contenido aún</h3>
+
               {% endfor %}
 
             </div>
           </div>
 
-                    <!-- Card lateral -->
+          {% comment %} Card lateral {% endcomment %}
           <div class="course-info-card">
             <div class="card-banner">
-              <div class="tag">{devilearn}</div>
-              <img src="{% static course.course_image %}" alt="Curso Django" />
-              <img class="author-avatar" src="https://randomuser.me/api/portraits/men/15.jpg" alt="Autor">
+              <div class="tag">{{ course.level }}</div>
+              <img src="{% if course.image %}{{ course.image }}{% else %}https://placehold.co/600x200/1e1e1e/ffffff?text={{ course.title }}{% endif %}" alt="{{ course.title }}" />
+              <img class="author-avatar" src="{{ course.owner.instructor_profile.photo }}" alt="{{ course.owner.get_full_name }}">
             </div>
             <div class="card-body">
+              <h1>{{ course.title }}</h1>
               <h3>Acerca de este curso</h3>
               <ul class="course-details">
-                <li><i class="fa-solid fa-file"></i> {{ course.info_course.lessons }} clases</li>
-                <li><i class="fa-solid fa-video"></i> {{ course.info_course.duration }} horas de contenido en video</li>
-                <li><i class="fa-solid fa-graduation-cap"></i> {{ course.info_course.instructor }}</li>
+                <li><i class="fa-solid fa-file"></i> {{ total_contents }} clases</li>
+                <li><i class="fa-solid fa-video"></i> {{ course.duration }} horas de contenido en video</li>
+                <li><i class="fa-solid fa-graduation-cap"></i> {{ course.owner.get_full_name }}</li>
               </ul>
-              <a class="btn bnt-primary btn-course" href="{% url course.course_link %}">Continuar aprendiendo</a>
+              <a class="btn bnt-primary btn-course" href="{% url 'course_lessons' slug=course.slug %}">Continuar aprendiendo</a>
 
             </div>
           </div>
@@ -78,5 +99,5 @@
 {% endblock content %}
 
 {% block scripts %}
-  <script src="{% static "js/script.js" %}"></script>
+  <script src="{% static 'js/script.js' %}"></script>
 {% endblock scripts %}

@@ -1,6 +1,7 @@
 from django.contrib import admin
 from .models import (Category, Course, CourseCategory,
-                     Module, Enrollment, Progress, Review, Content)
+                     Module, Enrollment, Progress, Review, Content,
+                     Image, Text, File, Video)
 
 class EnrollmentInline(admin.TabularInline):
     model = Enrollment
@@ -87,4 +88,21 @@ class ReviewAdmin(admin.ModelAdmin):
 
 @admin.register(Content)
 class ContentAdmin(admin.ModelAdmin):
-    list_display = ('module', 'content_type', 'order')
+    list_display = ('module', 'content_type', 'item')
+    list_filter = ('module',)
+    
+@admin.register(Text)
+class TextAdmin(admin.ModelAdmin):
+    list_display = ('owner', 'title', 'updated_at', 'content')
+    
+@admin.register(File)
+class FileAdmin(admin.ModelAdmin):
+    list_display = ('owner', 'title', 'updated_at', 'file')
+    
+@admin.register(Video)
+class VideoAdmin(admin.ModelAdmin):
+    list_display = ('owner', 'title', 'updated_at', 'file')
+    
+@admin.register(Image)
+class ImageAdmin(admin.ModelAdmin):
+    list_display = ('owner', 'title', 'updated_at', 'file')

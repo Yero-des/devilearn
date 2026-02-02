@@ -24,7 +24,7 @@
     <aside class="sidebar">
 
 
-      <h1 class="course-title">{{ lesson.course_title }}</h1>
+      <h1 class="course-title">{{ course_title }}</h1>
       <p class="progress">{{ lesson.course_progress }}% completado</p>
 
 
@@ -32,18 +32,19 @@
       <option>Buscar por título de lección</option>
     </select>
 
-            <!-- SECCIONES -->
+    {% comment %} Secciones {% endcomment %}
     <div class="accordion">
 
-      {% for section in lesson.course_content %}
+      {% for module in modules %}
 
         <div class="accordion-item">
-          <button class="accordion-header">Sección {{ section.id }}: {{ section.name }} <span>{{ section.complete_lessons }} / {{ section.total_lessons }}</span></button>
+          {% comment %} TODO: Ver cuantas lecciones ya he completado {% endcomment %}
+          <button class="accordion-header">Sección {{ forloop.counter }}: {{ module.title }} <span>{{ module.complete_lessons }} / {{ module.contents.count }}</span></button>
           <div class="accordion-content">
             <ul>
 
-              {% for lesson in section.lessons %}
-                <li>{{ lesson.name }}</li>
+              {% for content in module.contents.all %}
+                <li>{{ content.item.title }}</li>
               {% endfor %}
 
             </ul>
@@ -75,5 +76,5 @@
 {% endblock content %}
 
 {% block scripts %}
-  <script src="{% static "js/multimedia.js" %}"></script>
+  <script src="{% static 'js/multimedia.js' %}"></script>
 {% endblock scripts %}
