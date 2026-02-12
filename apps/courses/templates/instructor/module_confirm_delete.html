@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Eliminar Modulo{% endblock title %}
+
+{% block custom_styles %}
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  <link rel="stylesheet" href="{% static 'css/instructor_styles.css' %}">
+{% endblock custom_styles %}
+
+{% block content %}
+
+  <div class="layout">
+    {% include "includes/sidebar_instructor.html" %}
+    <div class="main-content">
+      {% include "includes/header_instructor.html" %}
+
+      <main>
+
+        <h2 class="form-title">¿Estás seguro/a que quieres eliminar el módulo "{{ module.title }}"?</h2>
+        <form method="post">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+        </form>
+        <a class="btn-cancel" href="{% url 'instructor:module_list' slug=module.course.slug %}">Cancelar</a>
+
+      </main>
+
+    </div>
+
+  </div>
+
+{% endblock content %}

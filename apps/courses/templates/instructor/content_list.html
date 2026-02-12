@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Contenidos del módulo: {{ module.title }}{% endblock title %}
+
+{% block custom_styles %}
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  <link rel="stylesheet" href="{% static 'css/instructor_styles.css' %}">
+{% endblock custom_styles %}
+
+{% block content %}
+
+  <div class="layout">
+    {% include "includes/sidebar_instructor.html" %}
+    <div class="main-content">
+      {% include "includes/header_instructor.html" %}
+
+      <main>
+
+        <h2 class="form-title">Contenidos del módulo: {{ module.title }}</h2>
+        
+        <h3 class="add-new-course">Agregar módulo</h3>
+        <div class="add-new-course gap">
+          <a href="#" class="button">Texto</a>
+          <a href="#" class="button">Imagen</a>
+          <a href="#" class="button">Archivo</a>
+          <a href="#" class="button">Video</a>
+        </div>
+        
+        <ul class="drag-list" id="module-list">
+          
+          {% for content in contents %}
+
+            <li class="drag-item" data-id='{{module.id}}'>
+              <strong>{{ content.item.title }}</strong> <em>{{ content.content_type.model }}</em>
+              <div class="actions">
+                <a href="#"><i class="fa-solid fa-eye"></i>Ver recurso</a>
+                <a href="#"><i class="fa-solid fa-pen-to-square"></i></a>
+                <a href="#"><i class="fa-solid fa-trash"></i></a>
+              </div>
+            </li>
+
+          {% empty %}
+
+            <li>No hay contenido aún.</li>
+
+          {% endfor %}
+                      
+        </ul>
+        
+      </main>
+
+    </div>
+
+  </div>
+
+{% endblock content %}

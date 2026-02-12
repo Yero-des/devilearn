@@ -9,6 +9,10 @@ body {
     font-family: 'Segoe UI', sans-serif;
 }
 
+.gap {
+    gap: 0.5rem;
+}
+
 .sidebar {
     width: 55px;
     height: 100vh;
