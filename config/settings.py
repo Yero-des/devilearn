@@ -125,3 +125,7 @@ STATICFILES_DIRS = [
 ]
 
 AUTH_USER_MODEL = 'profiles.User'
+
+LOGIN_URL = "login"
+LOGIN_REDIRECT_URL = "course_list"
+LOGOUT_REDIRECT_URL = "login"

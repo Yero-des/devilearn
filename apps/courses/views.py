@@ -5,7 +5,7 @@ from django.db.models import Q
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404
 
-# Create your views here.
+# Create your views here.p
 def course_list(request):
     courses = Course.objects.all()
     query = request.GET.get('q')
@@ -46,8 +46,10 @@ def course_detail(request, slug):
 def course_lessons(request, slug):
     course = get_object_or_404(Course, slug=slug)
     course_title = course.title
+    course_slug = course.slug
     modules = course.modules.prefetch_related('contents')
     return render(request, 'courses/course_lessons.html', {
         'course_title': course_title,
+        'course_slug': course_slug,
         'modules': modules
     })

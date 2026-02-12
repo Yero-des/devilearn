@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Mis cursos{% endblock title %}
+
+{% block custom_styles %}
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  <link rel="stylesheet" href="{% static 'css/instructor_styles.css' %}">
+{% endblock custom_styles %}
+
+{% block content %}
+
+  <div class="layout">
+    {% include "includes/sidebar_instructor.html" %}
+    <div class="main-content">
+      {% include "includes/header_instructor.html" %}
+
+      <main>
+
+        <h2 class="form-title">Ver Modulos</h2>
+        
+      </main>
+
+    </div>
+
+  </div>
+
+{% endblock content %}
