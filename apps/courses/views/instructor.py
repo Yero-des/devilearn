@@ -74,3 +74,4 @@ class ModuleListView(InstructorRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         context['course'] = self.course
         return context
+    
