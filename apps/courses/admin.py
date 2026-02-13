@@ -88,21 +88,26 @@ class ReviewAdmin(admin.ModelAdmin):
 
 @admin.register(Content)
 class ContentAdmin(admin.ModelAdmin):
-    list_display = ('module', 'content_type', 'item')
+    list_display = ('module__title', 'content_type', 'item', 'order')
     list_filter = ('module',)
+    ordering = ['-module__title', 'order']
     
 @admin.register(Text)
 class TextAdmin(admin.ModelAdmin):
-    list_display = ('owner', 'title', 'updated_at', 'content')
+    list_display = ('id', 'owner', 'title', 'updated_at', 'content')
+    ordering = ('-id',)
     
 @admin.register(File)
 class FileAdmin(admin.ModelAdmin):
-    list_display = ('owner', 'title', 'updated_at', 'file')
+    list_display = ('id', 'owner', 'title', 'updated_at', 'file')
+    ordering = ('-id',)
     
 @admin.register(Video)
 class VideoAdmin(admin.ModelAdmin):
-    list_display = ('owner', 'title', 'updated_at', 'file')
+    list_display = ('id', 'owner', 'title', 'updated_at', 'file')
+    ordering = ('-id',)
     
 @admin.register(Image)
 class ImageAdmin(admin.ModelAdmin):
-    list_display = ('owner', 'title', 'updated_at', 'file')
+    list_display = ('id', 'owner', 'title', 'updated_at', 'file')
+    ordering = ('-id',)

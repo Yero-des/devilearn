@@ -1,5 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, View
 from ..models import Course, Module, Content, Text, Image, File, Video
 from django.contrib.contenttypes.models import ContentType
@@ -11,7 +11,7 @@ CONTENT_MODELS = {
     'text': Text,
     'video': Video,
     'image': Image,
-    'video': Video
+    'file': File
 }
 
 class InstructorRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
@@ -150,7 +150,7 @@ class ContentCreateUpdateView(InstructorRequiredMixin, View):
     template_name = 'instructor/content_form.html'
     
     def get_model(self, model_name):
-        return CONTENT_MODELS.get(model_name, None)
+        return CONTENT_MODELS.get(model_name)
     
     def get_form(self, model, *args, **kwargs):
         Form = modelform_factory(
@@ -158,6 +158,8 @@ class ContentCreateUpdateView(InstructorRequiredMixin, View):
         return Form(*args, **kwargs)
         
     def dispatch(self, request, module_id=None, model_name=None, id=None, *args, **kwargs):
+        print(id)
+        
         self.module = get_object_or_404(
             Module, id=module_id, course__owner=request.user)
         self.model = self.get_model(model_name)
@@ -166,18 +168,18 @@ class ContentCreateUpdateView(InstructorRequiredMixin, View):
         if id:
             try:
                 content = Content.objects.select_related('content_type').get(
-                    object_id = id,
-                    content_type=ContentType.objects.get_for_models(self.model),
+                    object_id=id,
+                    content_type=ContentType.objects.get_for_model(self.model),
                     module=self.module,                    
                 )
                 self.obj = content.item
             except Content.DoesNotExist:
                 return HttpResponseForbidden("No tienes permiso o tipo invalido")            
         
-        return super().dispatch(request, module_id=None, model_name=None, id=None, *args, **kwargs)
+        return super().dispatch(request, module_id=module_id, model_name=model_name, id=id, *args, **kwargs)
     
     
-    def get(self, request, module_id, model_name, id=None):
+    def get(self, request, module_id, model_name, id=None):            
         form = self.get_form(self.model, instance=self.obj)
         return render(request, self.template_name, {
             'form': form,
@@ -195,9 +197,7 @@ class ContentCreateUpdateView(InstructorRequiredMixin, View):
             if not id:
                 Content.objects.create(module=self.module, item=obj)
             
-            return reverse_lazy('instructor:content_list', kwargs={
-                'module_id': self.module.id
-            })    
+            return redirect('instructor:content_list', module_id=self.module.id)    
             
         return render(request, self.template_name, {
             'form': form,
