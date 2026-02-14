@@ -29,4 +29,6 @@ urlpatterns = [
         instructor.ContentCreateUpdateView.as_view(), name="content_create"),
     path('module/<int:module_id>/content/<int:id>/<model_name>/create/',
         instructor.ContentCreateUpdateView.as_view(), name="content_create"),
+    path('content/<int:pk>/delete',
+        instructor.ContentDeleteview.as_view(), name="content_delete"),
 ]

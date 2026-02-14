@@ -44,10 +44,9 @@
                 {% endif %}
                 {{ content.item.title }}
               </strong> <em>{{ content.content_type.model }}</em>
-              <div class="actions">
-                <a href="#"><i class="fa-solid fa-eye"></i>Ver recurso</a>
+              <div class="actions">                
                 <a href="{% url 'instructor:content_create' module_id=module.id model_name=content.content_type.model id=content.item.id %}"><i class="fa-solid fa-pen-to-square"></i></a>
-                <a href="#"><i class="fa-solid fa-trash"></i></a>
+                <a href="{% url 'instructor:content_delete' pk=content.id %}"><i class="fa-solid fa-trash"></i></a>
               </div>
             </li>
 

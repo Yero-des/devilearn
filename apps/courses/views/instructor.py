@@ -2,16 +2,29 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, View
 from ..models import Course, Module, Content, Text, Image, File, Video
+from ..forms import TextForm, ImageForm, FileForm, VideoForm
 from django.contrib.contenttypes.models import ContentType
 from django.urls import reverse, reverse_lazy
 from django.forms.models import modelform_factory
 from django.http import HttpResponseForbidden
 
 CONTENT_MODELS = {
-    'text': Text,
-    'video': Video,
-    'image': Image,
-    'file': File
+    'text': {
+        'model': Text,
+        'form': TextForm
+    },
+    'video': {
+        'model': Video,
+        'form': VideoForm
+    },
+    'image': {
+        'model': Image,
+        'form': ImageForm
+    },
+    'file': {
+        'model': File,
+        'form': FileForm
+    },
 }
 
 class InstructorRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
@@ -150,19 +163,17 @@ class ContentCreateUpdateView(InstructorRequiredMixin, View):
     template_name = 'instructor/content_form.html'
     
     def get_model(self, model_name):
-        return CONTENT_MODELS.get(model_name)
+        return CONTENT_MODELS.get(model_name).get('model')
     
-    def get_form(self, model, *args, **kwargs):
-        Form = modelform_factory(
-            model, exclude=['owner', 'created_at', 'updated_at'])
+    def get_form(self, model, form, *args, **kwargs):
+        Form = modelform_factory(model, form)
         return Form(*args, **kwargs)
         
-    def dispatch(self, request, module_id=None, model_name=None, id=None, *args, **kwargs):
-        print(id)
-        
+    def dispatch(self, request, module_id=None, model_name=None, id=None, *args, **kwargs):                
         self.module = get_object_or_404(
             Module, id=module_id, course__owner=request.user)
         self.model = self.get_model(model_name)
+        self.form = CONTENT_MODELS.get(model_name).get('form')
         self.obj = None
         
         if id:
@@ -180,14 +191,14 @@ class ContentCreateUpdateView(InstructorRequiredMixin, View):
     
     
     def get(self, request, module_id, model_name, id=None):            
-        form = self.get_form(self.model, instance=self.obj)
+        form = self.get_form(self.model, self.form, instance=self.obj)
         return render(request, self.template_name, {
             'form': form,
             'content': self.obj
         })
         
     def post(self, request, module_id, model_name, id=None):
-        form = self.get_form(self.model, instance=self.obj, 
+        form = self.get_form(self.model, self.form, instance=self.obj, 
                              data=request.POST, files=request.FILES)
         if form.is_valid():
             obj = form.save(commit=False)
@@ -204,4 +215,16 @@ class ContentCreateUpdateView(InstructorRequiredMixin, View):
             'content': self.obj
         })
                 
+
+class ContentDeleteview(InstructorRequiredMixin, DeleteView):
+    model = Content
+    template_name = 'instructor/content_confirm_delete.html'
+    context_object_name = 'content'
     
+    def get_queryset(self):
+        return super().get_queryset().filter(module__course__owner=self.request.user)
+    
+    def get_success_url(self):
+        return reverse_lazy('instructor:content_list', kwargs={
+            'module_id': self.object.module.id
+        })
