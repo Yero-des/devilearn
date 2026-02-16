@@ -54,8 +54,9 @@ class CourseCategoryAdmin(admin.ModelAdmin):
 @admin.register(Module)
 class ModuleAdmin(admin.ModelAdmin):
     inlines = [ContentInline]
-    list_display = ('title', 'course')
+    list_display = ('title', 'course', 'order')
     list_filter = ('title', 'course__title')
+    ordering = ('course', 'order')
 
 
 @admin.register(Enrollment)

@@ -31,4 +31,7 @@ urlpatterns = [
         instructor.ContentCreateUpdateView.as_view(), name="content_create"),
     path('content/<int:pk>/delete',
         instructor.ContentDeleteview.as_view(), name="content_delete"),
+    # DDList Order
+    path('module/order', instructor.ModuleOrderView.as_view(), name="module_order"),
+    path('content/order', instructor.ContentOrderView.as_view(), name="content_order")
 ]

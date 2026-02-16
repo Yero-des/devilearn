@@ -22,7 +22,7 @@
           <a href="{% url 'instructor:module_create' slug=course.slug %}">Agregar módulo</a>
         </div>
         
-        <ul class="drag-list" id="module-list">
+        <ul class="drag-list" id="dd-list" data-url="{% url 'instructor:module_order' %}" data-csrf="{{ csrf_token }}">
           
           {% for module in modules %}
             <li class="drag-item" data-id='{{module.id}}'>
@@ -49,3 +49,10 @@
   </div>
 
 {% endblock content %}
+
+{% block scripts %}
+
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+  <script src="{% static 'instructor/js/drag-and-drop.js' %}"></script>
+
+{% endblock scripts %}

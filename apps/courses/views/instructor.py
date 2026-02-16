@@ -1,3 +1,4 @@
+import json
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, View
@@ -6,7 +7,7 @@ from ..forms import TextForm, ImageForm, FileForm, VideoForm
 from django.contrib.contenttypes.models import ContentType
 from django.urls import reverse, reverse_lazy
 from django.forms.models import modelform_factory
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden, JsonResponse
 
 CONTENT_MODELS = {
     'text': {
@@ -228,3 +229,46 @@ class ContentDeleteview(InstructorRequiredMixin, DeleteView):
         return reverse_lazy('instructor:content_list', kwargs={
             'module_id': self.object.module.id
         })
+        
+
+# Order
+class ModuleOrderView(InstructorRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
+        try:
+            data = json.loads(request.body)
+            order = data.get('order', [])
+            
+            for index, module_id in enumerate(order):
+                Module.objects.filter(id=module_id, course__owner=request.user).update(order=index)
+                
+            return JsonResponse({'status': 'ok'})
+            
+        except Exception as e:
+            return JsonResponse({
+                'status': 'error',
+                'messages': str(e),
+            }, status=400)
+            
+        
+class ContentOrderView(InstructorRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
+        try:
+            data = json.loads(request.body)
+            order = data.get('order', [])
+            module_id = data.get('moduleId', '')
+            
+            module = get_object_or_404(Module, id=module_id, course__owner=self.request.user)
+            contents = module.contents.all()
+            
+            for index, content_id in enumerate(order):
+                contents.filter(id=content_id).update(order=index)
+                
+            return JsonResponse({'status': 'ok'})
+            
+        except Exception as e:
+            return JsonResponse({
+                'status': 'error',
+                'messages': str(e),
+            }, status=400)
+            
+            

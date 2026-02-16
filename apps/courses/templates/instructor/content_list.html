@@ -27,27 +27,40 @@
           <a href="{% url 'instructor:content_create' module_id=module.id model_name='video' %}" class="button">Video</a>
         </div>
         
-        <ul class="drag-list" id="module-list">
+        <ul class="drag-list" id="dd-list" data-url="{% url 'instructor:content_order' %}" data-csrf="{{ csrf_token }}" data-module-id="{{ module.id}}">
           
           {% for content in contents %}
 
-            <li class="drag-item" data-id='{{module.id}}'>
-              <strong>
-                {% if content.content_type.model == "video" %}
-                  <i class="fa-solid fa-video"></i>
-                {% elif content.content_type.model == "file" %}
+            <li class="drag-item flex-drag-item" data-id='{{content.id}}'>
+              <header>
+                <strong>
+                  {% if content.content_type.model == "video" %}
+                    <i class="fa-solid fa-video"></i>
+                  {% elif content.content_type.model == "file" %}
+                    <i class="fa-solid fa-file"></i>
+                  {% elif content.content_type.model == "text" %}
+                    <i class="fa-solid fa-align-left"></i>
+                  {% elif content.content_type.model == "image" %}
+                    <i class="fa-solid fa-image"></i>
+                  {% endif %}
+                  {{ content.item.title }}
+                </strong> <em>{{ content.content_type.model }}</em>
+                <div class="actions">
+                  <a href="{% url 'instructor:content_create' module_id=module.id model_name=content.content_type.model id=content.item.id %}"><i class="fa-solid fa-pen-to-square"></i></a>
+                  <a href="{% url 'instructor:content_delete' pk=content.id %}"><i class="fa-solid fa-trash"></i></a>
+                </div>
+              </header>
+              <section>
+                {% if content.content_type.model == "file" %}
                   <i class="fa-solid fa-file"></i>
                 {% elif content.content_type.model == "text" %}
-                  <i class="fa-solid fa-align-left"></i>
+                  <p>{{ content.item.content }}</p>
                 {% elif content.content_type.model == "image" %}
-                  <i class="fa-solid fa-image"></i>
+                  <img src="{{ content.item.file.url }}" alt="Imagen de: {{ content.item.title }}">     
+                {% elif content.content_type.model == "video" %}   
+                  <video src="{{ content.item.file.url }}" autoplay loop muted playsinline></video>
                 {% endif %}
-                {{ content.item.title }}
-              </strong> <em>{{ content.content_type.model }}</em>
-              <div class="actions">                
-                <a href="{% url 'instructor:content_create' module_id=module.id model_name=content.content_type.model id=content.item.id %}"><i class="fa-solid fa-pen-to-square"></i></a>
-                <a href="{% url 'instructor:content_delete' pk=content.id %}"><i class="fa-solid fa-trash"></i></a>
-              </div>
+              </section>
             </li>
 
           {% empty %}
@@ -65,3 +78,10 @@
   </div>
 
 {% endblock content %}
+
+{% block scripts %}
+  
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+  <script src="{% static 'instructor/js/drag-and-drop.js' %}"></script>
+
+{% endblock scripts %}
