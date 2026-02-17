@@ -5,3 +5,4 @@ from .enrollment import Enrollment
 from .progress import Progress
 from .review import Review
 from .content import Content, Text, File, Image, Video
+from .progress_traking import CompletedContent

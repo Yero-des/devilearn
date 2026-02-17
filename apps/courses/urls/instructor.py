@@ -7,7 +7,7 @@ urlpatterns = [
     # Courses URLs
     path('courses/', 
          instructor.CourseListView.as_view(), name='course_list'),
-    path('course/create/', 
+    path('course/create/',
          instructor.CourseCreateView.as_view(), name="course_create"),
     path('course/<str:slug>/edit/',
         instructor.CourseUpdateView.as_view(), name="course_edit"), 
@@ -32,6 +32,8 @@ urlpatterns = [
     path('content/<int:pk>/delete',
         instructor.ContentDeleteview.as_view(), name="content_delete"),
     # DDList Order
-    path('module/order', instructor.ModuleOrderView.as_view(), name="module_order"),
-    path('content/order', instructor.ContentOrderView.as_view(), name="content_order")
+    path('module/order', 
+        instructor.ModuleOrderView.as_view(), name="module_order"),
+    path('content/order',
+        instructor.ContentOrderView.as_view(), name="content_order")
 ]

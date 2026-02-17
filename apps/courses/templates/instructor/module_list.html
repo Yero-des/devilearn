@@ -25,7 +25,7 @@
         <ul class="drag-list" id="dd-list" data-url="{% url 'instructor:module_order' %}" data-csrf="{{ csrf_token }}">
           
           {% for module in modules %}
-            <li class="drag-item" data-id='{{module.id}}'>
+            <li class="drag-item" data-id='{{module.id}}' style="padding: 1rem;">
               <strong>{{ module.title }}</strong>
               <div class="actions">
                 <a href="{% url 'instructor:content_list' module_id=module.id %}"><i class="fa-solid fa-eye"></i>Ver contenido</a>

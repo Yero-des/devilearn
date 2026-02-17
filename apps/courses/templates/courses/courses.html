@@ -30,7 +30,7 @@
             {% for course in courses %}
 
               <div class="course-card">
-                <a href='{% url "course_detail" slug=course.slug %}'>
+                <a href="{% url 'student:course_detail' slug=course.slug %}">
                   <img src="{{ course.image }}" alt="Course Image" class="course-img" />
                   <div class="course-info">
                     <div class="course-rating">
@@ -57,16 +57,16 @@
           <div class="paginator">
 
 
-            {% if courses.has_previous %}
+            {% if page_obj.has_previous %}
               <a href="?page=1&{{query_string}}">Primera</a>
-              <a href="?page={{courses.previous_page_number}}&{{query_string}}">Anterior</a>
+              <a href="?page={{page_obj.previous_page_number}}&{{query_string}}">Anterior</a>
             {% endif %}
 
-            <span>Pagina {{ courses.number }} de {{ courses.paginator.num_pages }}</span>
+            <span>Pagina {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
 
-            {% if courses.has_next %}
-              <a href="?page={{courses.next_page_number}}&{{query_string}}">Siguiente</a>
-              <a href="?page={{courses.paginator.num_pages}}&{{query_string}}">Ultima</a>
+            {% if page_obj.has_next %}
+              <a href="?page={{page_obj.next_page_number}}&{{query_string}}">Siguiente</a>
+              <a href="?page={{page_obj.paginator.num_pages}}&{{query_string}}">Ultima</a>
             {% endif %}
 
           </div>

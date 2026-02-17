@@ -5,3 +5,4 @@ from .models.enrollment import Enrollment
 from .models.progress import Progress
 from .models.review import Review
 from .models.content import Content, Image, Text, File, Video
+from .models.progress_traking import CompletedContent

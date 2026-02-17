@@ -4,7 +4,7 @@
 {% block title %} Lecciones {% endblock title %}
 
 {% block custom_styles %}
-  <link rel="stylesheet" href="{% static "css/lessons.css" %}">
+  <link rel="stylesheet" href="{% static 'css/lessons.css' %}">
 {% endblock custom_styles %}
 
 {% block content %}
@@ -12,7 +12,7 @@
   <!-- HEADER SUPERIOR -->
   <header class="topbar">
     <div class="acciones">
-      <div class="back-link"> <button class="discusiones">&larr; Ve al panel de control</button></div>
+      <div class="back-link"> <a href="{{ request.META.HTTP_REFERRER }}" class="discusiones">&larr; Ve al panel de control</a></div>
 
     </div>
     <div class="logo"><img src="{% static "images/devilearn.png" %}" alt="Logo devilearn"></div>
@@ -39,7 +39,7 @@
 
         <div class="accordion-item">
           {% comment %} TODO: Ver cuantas lecciones ya he completado {% endcomment %}
-          <button class="accordion-header">Sección {{ forloop.counter }}: {{ module.title }} <span>{{ module.complete_lessons }} / {{ module.contents.count }}</span></button>
+          <button class="accordion-header">Sección {{ forloop.counter }}: {{ module.title }} <span>{{ module.completed_count }} / {{ module.total_count }}</span></button>
           <div class="accordion-content">
             <ul>
 
