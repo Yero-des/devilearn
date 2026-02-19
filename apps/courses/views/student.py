@@ -1,10 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from ..models import Course, Enrollment, CompletedContent, Content, Progress
 from django.db.models import Q
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, View
 
 # Course
 class CourseListView(ListView):
@@ -60,17 +60,6 @@ class CourseDetailView(DetailView):
         context["total_contents"] = total_contents
         return context
     
-    
-
-# def course_detail(request, slug):
-#     course = get_object_or_404(Course, slug=slug)
-#     modules = course.modules.prefetch_related('contents').order_by('order')
-#     total_contents = sum(module.contents.count() for module in modules )
-#     return render(request, 'courses/course_detail.html', {
-#         'course': course,
-#         'modules': modules,
-#         'total_contents': total_contents
-#     })
 
 def course_lessons(request, slug, content_id=None):
     course = get_object_or_404(Course, slug=slug)
@@ -117,3 +106,20 @@ def course_lessons(request, slug, content_id=None):
         'current_content': current_content,
         'progress': int(progress)
     })
+    
+
+class MarkCompleteView(View):
+    
+    def post(request, content_id):
+        content = get_object_or_404(Content, id=content_id)        
+        CompletedContent.objects.get_or_create(user=request.user, content=content)
+        
+        next_content = Content.objects.filter(
+            module=content.module,
+            order__gt=content.order
+        ).order_by('order').first()
+    
+        if next_content:
+            return redirect('student:course_lessons', slug=content.module.course.slug, content_id=next_content.id)
+        
+        return redirect('student:course_lessons', slug=content.module.course.slug)
