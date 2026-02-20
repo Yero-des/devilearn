@@ -21,9 +21,9 @@
         <div class="add-new-course">
           <a href="{% url 'instructor:module_create' slug=course.slug %}">Agregar módulo</a>
         </div>
-        
+
         <ul class="drag-list" id="dd-list" data-url="{% url 'instructor:module_order' %}" data-csrf="{{ csrf_token }}">
-          
+
           {% for module in modules %}
             <li class="drag-item" data-id='{{module.id}}' style="padding: 1rem;">
               <strong>{{ module.title }}</strong>
@@ -39,9 +39,9 @@
             <li>No hay módulos aún.</li>
 
           {% endfor %}
-                      
+
         </ul>
-        
+
       </main>
 
     </div>

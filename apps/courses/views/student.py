@@ -1,7 +1,7 @@
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from ..models import Course, Enrollment, CompletedContent, Content, Progress
-from django.db.models import Q
+from django.db.models import Q, Prefetch
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404
 from django.views.generic import ListView, DetailView, View
@@ -52,7 +52,10 @@ class CourseDetailView(DetailView):
     def get_context_data(self, **kwargs) -> dict[str, any]:
         context = super().get_context_data(**kwargs)
         
-        modules = self.object.modules.prefetch_related('contents').order_by('order')        
+        modules = self.object.modules.prefetch_related(Prefetch(
+            'contents',
+            queryset=Content.objects.order_by('order')
+        )).order_by('order')        
         total_contents = sum(module.contents.count() for module in modules )
         
         context["modules"] = modules
@@ -61,56 +64,69 @@ class CourseDetailView(DetailView):
         return context
     
 
-def course_lessons(request, slug, content_id=None):
-    course = get_object_or_404(Course, slug=slug)
-    course_title = course.title
-    course_slug = course.slug
-    modules = course.modules.prefetch_related('contents').order_by('order')
+class CourseLessonsView(DetailView):
+    model = Course
+    template_name = 'courses/course_lessons.html'
+    slug_field = 'slug'
+    slug_url_kwarg = 'slug'
+    context_object_name = 'course'
     
-    # Enrollment
-    Enrollment.objects.get_or_create(user=request.user, course=course)
-    
-    # get all contents
-    all_contents = [c for m in modules for c in m.contents.all()]
-    total_contents = len(all_contents)
-    
-    completed = CompletedContent.objects.filter(
-        user=request.user, 
-        content__in=all_contents).values_list('content_id', flat=True)
-    
-    # progress by module
-    for module in modules:
-        module.completed_count = module.contents.filter(id__in=completed).count()
-        module.total_count = module.contents.count()
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
         
-    current_content = None
-    if content_id:
-        current_content = get_object_or_404(Content, id=content_id, module__course=course)
+        course = self.object
+        modules = course.modules.prefetch_related(Prefetch(
+            'contents',
+            queryset=Content.objects.order_by('order')    
+        )).order_by('order')
         
-    progress = (len(completed) / total_contents * 100) if total_contents else 0
-    
-    Progress.objects.update_or_create(
-        user=request.user,
-        course=course,
-        defaults={
-            'progress': progress
-        }
-    )
-    
-    return render(request, 'courses/course_lessons.html', {
-        'course_title': course_title,
-        'course_slug': course_slug,
-        'modules': modules,
-        'course': course,
-        'completed_ids': set(completed),
-        'current_content': current_content,
-        'progress': int(progress)
-    })
+        # Enrollment
+        Enrollment.objects.get_or_create(user=self.request.user, course=course)
+        
+        # get all contents
+        all_contents = [c for m in modules for c in m.contents.all()]
+        total_contents = len(all_contents)
+        
+        completed = CompletedContent.objects.filter(
+            user=self.request.user, 
+            content__in=all_contents).values_list('content_id', flat=True)
+        
+        # progress by module
+        for module in modules:
+            module.completed_count = module.contents.filter(id__in=completed).count()
+            module.total_count = module.contents.count()
+        
+        # get content_id from URL parameters
+        content_id = self.kwargs.get('content_id')
+        current_content = None
+        if content_id:
+            current_content = get_object_or_404(Content, id=content_id, module__course=course)
+        
+        progress = (len(completed) / total_contents * 100) if total_contents else 0
+        
+        Progress.objects.update_or_create(
+            user=self.request.user,
+            course=course,
+            defaults={
+                'progress': progress
+            }
+        )
+        
+        context.update({
+            'course_title': course.title,
+            'course_slug': course.slug,
+            'modules': modules,
+            'completed_ids': set(completed),
+            'current_content': current_content,
+            'progress': int(progress)
+        })
+        
+        return context
     
 
 class MarkCompleteView(View):
     
-    def post(request, content_id):
+    def post(self, request, content_id, *args, **kwargs):
         content = get_object_or_404(Content, id=content_id)        
         CompletedContent.objects.get_or_create(user=request.user, content=content)
         
@@ -118,7 +134,7 @@ class MarkCompleteView(View):
             module=content.module,
             order__gt=content.order
         ).order_by('order').first()
-    
+        
         if next_content:
             return redirect('student:course_lessons', slug=content.module.course.slug, content_id=next_content.id)
         

@@ -18,7 +18,7 @@
       <main>
 
         <h2 class="form-title">Contenidos del módulo: {{ module.title }}</h2>
-        
+
         <h3 class="add-new-course">Agregar nuevo contenido</h3>
         <div class="add-new-course gap">
           <a href="{% url 'instructor:content_create' module_id=module.id model_name='text' %}" class="button">Texto</a>
@@ -26,9 +26,9 @@
           <a href="{% url 'instructor:content_create' module_id=module.id model_name='file' %}" class="button">Archivo</a>
           <a href="{% url 'instructor:content_create' module_id=module.id model_name='video' %}" class="button">Video</a>
         </div>
-        
+
         <ul class="drag-list" id="dd-list" data-url="{% url 'instructor:content_order' %}" data-csrf="{{ csrf_token }}" data-module-id="{{ module.id}}">
-          
+
           {% for content in contents %}
 
             <li class="drag-item flex-drag-item" data-id='{{content.id}}'>
@@ -52,12 +52,12 @@
               </header>
               <section>
                 {% if content.content_type.model == "file" %}
-                  <i class="fa-solid fa-file"></i>
+                  <i class="fa-solid fa-download"></i>
                 {% elif content.content_type.model == "text" %}
                   <p>{{ content.item.content }}</p>
                 {% elif content.content_type.model == "image" %}
-                  <img src="{{ content.item.file.url }}" alt="Imagen de: {{ content.item.title }}">     
-                {% elif content.content_type.model == "video" %}   
+                  <img src="{{ content.item.file.url }}" alt="Imagen de: {{ content.item.title }}">
+                {% elif content.content_type.model == "video" %}
                   <video src="{{ content.item.file.url }}" autoplay loop muted playsinline></video>
                 {% endif %}
               </section>
@@ -68,9 +68,9 @@
             <li>No hay contenido aún.</li>
 
           {% endfor %}
-                      
+
         </ul>
-        
+
       </main>
 
     </div>
@@ -80,7 +80,7 @@
 {% endblock content %}
 
 {% block scripts %}
-  
+
   <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
   <script src="{% static 'instructor/js/drag-and-drop.js' %}"></script>
 

@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models import (Category, Course, CourseCategory,
                      Module, Enrollment, Progress, Review, Content,
-                     Image, Text, File, Video)
+                     Image, Text, File, Video, CompletedContent)
 
 class EnrollmentInline(admin.TabularInline):
     model = Enrollment
@@ -27,6 +27,10 @@ class ContentInline(admin.TabularInline):
     model = Content
     extra = 1
 
+@admin.register(CompletedContent)
+class CompletedContentAdmin(admin.ModelAdmin):
+    list_display = ('content', 'content__module__title', 'content__module__course__title')
+    ordering = ('content__module__course', 'content__module',)
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):

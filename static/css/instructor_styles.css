@@ -183,6 +183,11 @@ form button {
     color: #fff;    
 }
 
+.flex-drag-item > section > i {
+    margin: 0;
+    padding: 1rem;
+}
+
 .flex-drag-item > section > p {
     margin: 0;
     font-size: 10px;

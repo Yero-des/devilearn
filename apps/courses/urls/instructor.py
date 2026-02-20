@@ -35,5 +35,5 @@ urlpatterns = [
     path('module/order', 
         instructor.ModuleOrderView.as_view(), name="module_order"),
     path('content/order',
-        instructor.ContentOrderView.as_view(), name="content_order")
+        instructor.ContentOrderView.as_view(), name="content_order"),
 ]
