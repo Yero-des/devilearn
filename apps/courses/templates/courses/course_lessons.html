@@ -73,7 +73,32 @@
       {% if current_content %}
 
 
-        <div class="content-header">Introducción al curso</div>
+        <div class="content-header">
+
+          <h3>{{ current_content.item.title }}</h3>        
+          <div class="content-previous-next-buttons">
+            
+            {% if previous_content %}
+  
+              <a href="{% url 'student:course_lessons' slug=previous_content.module.course.slug content_id=previous_content.id %}">                
+                <button type="submit"><i class="fa-solid fa-angle-left"></i></button>
+              </a>   
+  
+            {% endif %}
+                          
+            {% if next_content %}
+              
+              <a href="{% url 'student:course_lessons' slug=next_content.module.course.slug  content_id=next_content.id %}">                
+                <button type="submit"><i class="fa-solid fa-angle-right"></i></button>
+              </a>
+  
+            {% endif %}
+              
+          </div>
+
+        </div>
+
+
         <div class="content-display">
           
           {% with type=current_content.content_type.model url=current_content.item.file.url %}

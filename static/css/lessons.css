@@ -1,3 +1,13 @@
+.content-previous-next-buttons {
+    display: flex;
+    gap: 1rem;
+}
+
+.content-previous-next-buttons button {
+    padding: 0.5rem;
+    cursor: pointer;
+}
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -208,4 +218,35 @@ video {
     .main-content {
         padding: 1rem;
     }
+}
+
+.completed {
+    color: green;
+    font-weight: bold;
+}
+
+.active-content {
+    background: #f0f8ff;
+}
+
+
+
+
+.search-results {
+    background: white;
+    border: 1px solid #ccc;
+    position: absolute;
+    width: 100%;
+    z-index: 999;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.search-results li {
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.search-results li:hover {
+    background-color: #f5f5f5;
 }

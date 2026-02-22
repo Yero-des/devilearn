@@ -35,10 +35,13 @@ class CourseListView(ListView):
         if "page" in query_params:
             query_params.pop("page")
         
-        query_string = query_params.urlencode()   
+        query_string = query_params.urlencode()  
         
-        context["query"] = query
-        context["query_string"] = query_string
+        context.update({
+            'query': query,
+            'query_string': query_string
+        }) 
+        
         return context
 
 
@@ -112,13 +115,25 @@ class CourseLessonsView(DetailView):
             }
         )
         
+        previous_content = Content.objects.filter(
+            module=current_content.module,
+            order__lt=current_content.order
+        ).order_by('order').last()    
+        
+        next_content = Content.objects.filter(
+            module=current_content.module,
+            order__gt=current_content.order
+        ).order_by('order').first()        
+        
         context.update({
             'course_title': course.title,
             'course_slug': course.slug,
             'modules': modules,
             'completed_ids': set(completed),
             'current_content': current_content,
-            'progress': int(progress)
+            'progress': int(progress),
+            'previous_content': previous_content,
+            'next_content': next_content
         })
         
         return context
@@ -139,3 +154,4 @@ class MarkCompleteView(View):
             return redirect('student:course_lessons', slug=content.module.course.slug, content_id=next_content.id)
         
         return redirect('student:course_lessons', slug=content.module.course.slug)
+    
