@@ -9,5 +9,6 @@ class Module(models.Model):
     order = OrderField(blank=True, for_fields=['course'])
     
     def __str__(self):
-        return f"{self.course.title} - {self.title}"
+        return f"{self.course.title} - {self.title}"    
+    
     

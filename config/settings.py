@@ -34,13 +34,14 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'apps.courses',
     'apps.dashboard',
-    'apps.profiles',
+    'apps.profiles',    
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_cleanup.apps.CleanupConfig',
 ]
 
 MIDDLEWARE = [

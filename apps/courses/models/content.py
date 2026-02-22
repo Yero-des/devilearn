@@ -38,3 +38,22 @@ class Content(models.Model):
     item = GenericForeignKey('content_type', 'object_id')
     order = OrderField(blank=True, for_fields=['module'])
     
+    class Meta:
+        ordering = ['order']        
+    
+    def save(self, *args, **kwargs):
+        if self.pk:
+            old = Content.objects.get(pk=self.pk)
+
+            # Si cambió el item
+            if old.object_id != self.object_id or old.content_type != self.content_type:
+                if old.item:
+                    old.item.delete()
+
+        super().save(*args, **kwargs)
+        
+    def delete(self, *args, **kwargs):
+        if self.item:
+            self.item.delete()
+        return super().delete(*args, **kwargs)
+    

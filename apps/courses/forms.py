@@ -59,7 +59,7 @@ class VideoForm(forms.ModelForm):
         
         if file and isinstance(file, UploadedFile):
             
-            if file.size > 2 * 1024 * 1024:
+            if file.size > 5 * 1024 * 1024:
                 raise forms.ValidationError('El archivo no puede superar los 2 MB')
                         
         return file

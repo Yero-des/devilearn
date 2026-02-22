@@ -1,7 +1,7 @@
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from ..models import Course, Enrollment, CompletedContent, Content, Progress
-from django.db.models import Q, Prefetch
+from django.db.models import Q
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404
 from django.views.generic import ListView, DetailView, View
@@ -55,10 +55,7 @@ class CourseDetailView(DetailView):
     def get_context_data(self, **kwargs) -> dict[str, any]:
         context = super().get_context_data(**kwargs)
         
-        modules = self.object.modules.prefetch_related(Prefetch(
-            'contents',
-            queryset=Content.objects.order_by('order')
-        )).order_by('order')        
+        modules = self.object.modules.prefetch_related('contents').order_by('order')        
         total_contents = sum(module.contents.count() for module in modules )
         
         context["modules"] = modules
@@ -78,10 +75,7 @@ class CourseLessonsView(DetailView):
         context = super().get_context_data(**kwargs)
         
         course = self.object
-        modules = course.modules.prefetch_related(Prefetch(
-            'contents',
-            queryset=Content.objects.order_by('order')    
-        )).order_by('order')
+        modules = course.modules.prefetch_related('contents').order_by('order')
         
         # Enrollment
         Enrollment.objects.get_or_create(user=self.request.user, course=course)
@@ -115,15 +109,19 @@ class CourseLessonsView(DetailView):
             }
         )
         
-        previous_content = Content.objects.filter(
-            module=current_content.module,
-            order__lt=current_content.order
-        ).order_by('order').last()    
+        previous_content = None
+        next_content = None
         
-        next_content = Content.objects.filter(
-            module=current_content.module,
-            order__gt=current_content.order
-        ).order_by('order').first()        
+        if current_content:
+            previous_content = Content.objects.filter(
+                module=current_content.module,
+                order__lt=current_content.order
+            ).order_by('order').last()    
+            
+            next_content = Content.objects.filter(
+                module=current_content.module,
+                order__gt=current_content.order
+            ).order_by('order').first()        
         
         context.update({
             'course_title': course.title,

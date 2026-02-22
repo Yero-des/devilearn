@@ -5,6 +5,21 @@
 
 {% block custom_styles %}
   <link rel="stylesheet" href="{% static 'css/lessons.css' %}">
+  <style>
+    .progress-fill {
+      background: #00b894;
+      height: 100%;   
+      width: {{ progress }}%;
+    }
+    .progress-bar {
+      background: #e0e0e0;
+      border-radius: 6px;
+      overflow: hidden;
+      height: 12px;
+      margin-top: 4px;
+      margin-bottom: 15px;
+    }
+  </style>
 {% endblock custom_styles %}
 
 {% block content %}
@@ -12,10 +27,10 @@
   <!-- HEADER SUPERIOR -->
   <header class="topbar">
     <div class="acciones">
-      <div class="back-link"> <a href="{{ request.META.HTTP_REFERRER }}" class="discusiones">&larr; Ve al panel de control</a></div>
+      <div class="back-link"> <a href="{% url 'student:course_detail' slug=course_slug %}" class="discusiones">&larr; Ve al panel de control</a></div>
 
     </div>
-    <div class="logo"><img src="{% static "images/devilearn.png" %}" alt="Logo devilearn"></div>
+    <div class="logo"><img src="{% static 'images/devilearn.png' %}" alt="Logo devilearn"></div>
   </header>
 
   <!-- LAYOUT PRINCIPAL -->
@@ -26,7 +41,7 @@
 
       <h1 class="course-title">{{ course_title }}</h1>
       <p class="progress">{{ progress }}% completado</p>
-      <div class="progess-bar"><div class="progress-fill"></div></div>
+      <div class="progress-bar"><div class="progress-fill"></div></div>
 
 
       <input class="lesson-search" id="lesson-search" placeholder="Buscar...">
@@ -75,7 +90,8 @@
 
         <div class="content-header">
 
-          <h3>{{ current_content.item.title }}</h3>        
+          <h3>{{ current_content.module.title }} ({{ current_content.order|add:1 }}/{{ current_content.module.contents.count }})</h3>
+          <h4 style="font-weight:normal;">{{ current_content.item.title }}</h4>        
           <div class="content-previous-next-buttons">
             
             {% if previous_content %}
