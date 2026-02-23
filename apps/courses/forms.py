@@ -2,6 +2,19 @@ from django import forms
 from .models import Text, File, Image, Video
 from django.core.files.uploadedfile import UploadedFile
 
+LIMIT_TYPES = {
+    'kb': 1024,
+    'mb': 1024 * 1024,
+    'gb': 1024 * 1024 * 1024,
+}
+
+def validation_limit_file_size(file, limit_size, limit_type):
+        
+    if LIMIT_TYPES.get(limit_type):
+        if file.size > limit_size * LIMIT_TYPES.get(limit_type):
+            raise forms.ValidationError(f'El archivo no puede superar los {limit_size} {limit_type.upper()}')
+                        
+
 class TextForm(forms.ModelForm):
     class Meta:
         model = Text
@@ -17,10 +30,8 @@ class FileForm(forms.ModelForm):
         file = self.cleaned_data.get('file')
         
         if file and isinstance(file, UploadedFile):
-            
-            if file.size > 2 * 1024 * 1024:
-                raise forms.ValidationError('El archivo no puede superar los 2 MB')
-                        
+            validation_limit_file_size(file, 2, 'mb')                  
+         
         return file
      
             
@@ -33,14 +44,12 @@ class ImageForm(forms.ModelForm):
         file = self.cleaned_data.get('file')
         
         if file and isinstance(file, UploadedFile):
-            
-            if file.size > 2 * 1024 * 1024:
-                raise forms.ValidationError('El archivo no puede superar los 2 MB')
+            validation_limit_file_size(file, 2, 'mb')
             
             if file.content_type not in [
                 'image/jpeg',
                 'image/png',
-                'image/gif'
+                'image/gif',
             ]:
                 raise forms.ValidationError(
                     "El archivo solo acepta imágenes .jpeg, .png o .gif"
@@ -58,8 +67,6 @@ class VideoForm(forms.ModelForm):
         file = self.cleaned_data.get('file')
         
         if file and isinstance(file, UploadedFile):
-            
-            if file.size > 5 * 1024 * 1024:
-                raise forms.ValidationError('El archivo no puede superar los 2 MB')
-                        
+            validation_limit_file_size(file, 7, 'mb')
+        
         return file

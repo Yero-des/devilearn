@@ -111,18 +111,27 @@ class CourseLessonsView(DetailView):
         
         previous_content = None
         next_content = None
+        current_contents = None
+        current_position = None
+        current_total_contents = None
         
         if current_content:
-            previous_content = Content.objects.filter(
-                module=current_content.module,
-                order__lt=current_content.order
-            ).order_by('order').last()    
             
-            next_content = Content.objects.filter(
-                module=current_content.module,
+            current_contents = Content.objects.filter(module=current_content.module)
+            
+            previous_content = current_contents.filter(
+                order__lt=current_content.order            
+            ).last()    
+            
+            next_content = current_contents.filter(
                 order__gt=current_content.order
-            ).order_by('order').first()        
-        
+            ).first()    
+            
+            contents_list = list(current_contents)
+            
+            current_total_contents = len(contents_list)
+            current_position = contents_list.index(current_content) + 1            
+            
         context.update({
             'course_title': course.title,
             'course_slug': course.slug,
@@ -131,7 +140,9 @@ class CourseLessonsView(DetailView):
             'current_content': current_content,
             'progress': int(progress),
             'previous_content': previous_content,
-            'next_content': next_content
+            'next_content': next_content,
+            'current_total_contents': current_total_contents,
+            'current_position': current_position,
         })
         
         return context
