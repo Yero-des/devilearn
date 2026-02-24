@@ -18,6 +18,9 @@
       <main>
 
         <h2 class="form-title">Contenidos del módulo: {{ module.title }}</h2>
+        <a class="form-title" href="{% url 'instructor:module_list' slug=module.course.slug %}">
+          <h3>Regresar al modulo</h3>
+        </a>
 
         <h3 class="add-new-course">Agregar nuevo contenido</h3>
         <div class="add-new-course gap">

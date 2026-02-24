@@ -652,3 +652,11 @@ a.btn {
 .paginator {
     text-align: center;
 }
+
+.btn-logout {
+    background-color: transparent;
+    color: #fff;
+    font-size: 18px;
+    border: none;
+    cursor: pointer;
+}

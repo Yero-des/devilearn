@@ -207,3 +207,10 @@ form button {
     width: 100%;
     object-fit: fill;
 }
+
+.form-logout {
+    background-color: none;
+    padding: 0;
+    margin: 0;
+}
+

@@ -3,8 +3,10 @@ from django.urls import include, path
 from django.contrib.auth.views import LoginView, LogoutView
 from django.conf import settings
 from django.conf.urls.static import static
+from apps.dashboard.views import RedirectHomeView
 
 urlpatterns = [
+    path('', RedirectHomeView.as_view()),
     path('admin/', admin.site.urls),
     path('dashboard/', include('apps.dashboard.urls')),
     path("profile/", include('apps.profiles.urls')),

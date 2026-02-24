@@ -52,6 +52,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'apps.dashboard.middleware.RedirectAuthenticatedMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -131,6 +132,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 AUTH_USER_MODEL = 'profiles.User'
 
-LOGIN_URL = "login"
 LOGIN_REDIRECT_URL = "course_list"
 LOGOUT_REDIRECT_URL = "login"
+LOGIN_URL = "login"

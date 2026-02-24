@@ -5,9 +5,10 @@ from django.db.models import Q
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404
 from django.views.generic import ListView, DetailView, View
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Course
-class CourseListView(ListView):
+class CourseListView(LoginRequiredMixin, ListView):
     model = Course
     template_name = 'courses/courses.html'
     paginate_by = 8
@@ -45,7 +46,7 @@ class CourseListView(ListView):
         return context
 
 
-class CourseDetailView(DetailView):
+class CourseDetailView(LoginRequiredMixin, DetailView):
     model = Course
     template_name = 'courses/course_detail.html'
     slug_field = 'slug'
@@ -64,7 +65,7 @@ class CourseDetailView(DetailView):
         return context
     
 
-class CourseLessonsView(DetailView):
+class CourseLessonsView(LoginRequiredMixin, DetailView):
     model = Course
     template_name = 'courses/course_lessons.html'
     slug_field = 'slug'
@@ -148,7 +149,7 @@ class CourseLessonsView(DetailView):
         return context
     
 
-class MarkCompleteView(View):
+class MarkCompleteView(LoginRequiredMixin, View):
     
     def post(self, request, content_id, *args, **kwargs):
         content = get_object_or_404(Content, id=content_id)        
