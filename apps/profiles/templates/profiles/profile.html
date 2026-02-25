@@ -22,47 +22,56 @@
       <main>
         <div class="profile-container">
           <div class="profile-picture">
-            <img src="https://randomuser.me/api/portraits/men/42.jpg" alt="Foto de perfil">
+            
+            {% if user.photo %}
+              <img src="{{ user.photo.url }}" alt="Foto de perfil de {{ user.get_full_name }}">              
+            {% else %}
+              <img src="https://static.vecteezy.com/system/resources/previews/009/292/244/non_2x/default-avatar-icon-of-social-media-user-vector.jpg" alt="Foto de perfil">
+            {% endif %}
+              
             <label for="fileUpload">Cargar nueva imagen</label>
-            <input type="file" id="fileUpload" style="display: none;">
+            <input type="file" id="fileUpload" style="display: none;" form="profileForm" name="{{ form.photo.name}}" >
           </div>
 
-          <form class="profile-form">
+          <form id="profileForm" class="profile-form" enctype="multipart/form-data" method="post">
+            {% csrf_token %}
+
             <h2>Editar perfil</h2>
 
             <div class="input-group">
               <label for="email">Correo electrónico</label>
-              <input type="email" id="email" value="usuario@correo.com">
+              <input type="email" id="email" value="{{ form.email.value }}" name="{{ form.email.name }}">
             </div>
 
             <div class="input-row">
               <div class="input-group">
                 <label for="nombre">Nombre</label>
-                <input type="text" id="nombre" value="Nombre">
+                <input type="text" id="nombre" value="{{ form.first_name.value }}" name="{{ form.first_name.name }}">
               </div>
               <div class="input-group">
                 <label for="apellido">Apellido</label>
-                <input type="text" id="apellido" value="Apellido">
+                <input type="text" id="apellido" value="{{ form.last_name.value }}" name="{{ form.last_name.name }}">
               </div>
             </div>
 
             <div class="input-group">
               <label for="compania">Compañía</label>
-              <input type="text" id="compania">
+              <input type="text" id="compania" value="{{ form.company.value }}" name="{{ form.company.name }}">
             </div>
 
             <div class="input-group">
               <label for="titulo">Título profesional</label>
-              <input type="text" id="titulo">
+              <input type="text" id="titulo" value="{{ form.professional_title.value }}" name="{{ form.professional_title.name }}">
             </div>
-
+            
             <div class="input-group">
               <label for="zona">Zona horaria</label>
-              <select id="zona">
+              <select id="zona" value="{{ form.time_zone.value }}" name="{{ form.time_zone.name }}">
                 <option value="">Seleccione su zona horaria</option>
-                <option value="UTC-6">UTC-6 Ciudad de México</option>
-                <option value="UTC-5">UTC-5 Bogotá</option>
-                <option value="UTC-3">UTC-3 Buenos Aires</option>
+                <option value="UTC-6" {% if form.time_zone.value == "UTC-6" %}selected{% endif %}>UTC-6 Ciudad de México</option>
+                <option value="UTC-5" {% if form.time_zone.value == "UTC-5" %}selected{% endif %}>UTC-5 Bogotá</option>
+                <option value="UTC-4" {% if form.time_zone.value == "UTC-4" %}selected{% endif %}>UTC-5 Lima</option>
+                <option value="UTC-3" {% if form.time_zone.value == "UTC-3" %}selected{% endif %}>UTC-3 Buenos Aires</option>
               </select>
             </div>
 

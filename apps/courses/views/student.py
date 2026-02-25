@@ -1,7 +1,7 @@
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
-from ..models import Course, Enrollment, CompletedContent, Content, Progress
-from django.db.models import Q
+from ..models import Course, Enrollment, CompletedContent, Content, Progress, Module
+from django.db.models import Q, Max
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404
 from django.views.generic import ListView, DetailView, View
@@ -129,7 +129,7 @@ class CourseLessonsView(LoginRequiredMixin, DetailView):
             ).first()    
             
             contents_list = list(current_contents)
-            
+                        
             current_total_contents = len(contents_list)
             current_position = contents_list.index(current_content) + 1            
             
@@ -143,7 +143,7 @@ class CourseLessonsView(LoginRequiredMixin, DetailView):
             'previous_content': previous_content,
             'next_content': next_content,
             'current_total_contents': current_total_contents,
-            'current_position': current_position,
+            'current_position': current_position
         })
         
         return context
@@ -155,6 +155,12 @@ class MarkCompleteView(LoginRequiredMixin, View):
         content = get_object_or_404(Content, id=content_id)        
         CompletedContent.objects.get_or_create(user=request.user, content=content)
         
+        next_module = Module.objects.filter(
+            course=content.module.course,
+            order__gt=content.module.order
+        ).order_by('order').first()
+        
+        
         next_content = Content.objects.filter(
             module=content.module,
             order__gt=content.order
@@ -162,6 +168,11 @@ class MarkCompleteView(LoginRequiredMixin, View):
         
         if next_content:
             return redirect('student:course_lessons', slug=content.module.course.slug, content_id=next_content.id)
+        elif next_module:
+            # Obtener el primer contenido del siguiente modulo
+            next_module_contents = next_module.contents.order_by('order').first()
+            if next_module_contents:
+                return redirect('student:course_lessons', slug=content.module.course.slug, content_id=next_module_contents.id)
         
         return redirect('student:course_lessons', slug=content.module.course.slug)
     

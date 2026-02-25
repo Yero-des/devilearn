@@ -8,7 +8,7 @@
   <style>
     .progress-fill {
       background: #00b894;
-      height: 100%;   
+      height: 100%;
       width: {{ progress }}%;
     }
     .progress-bar {
@@ -91,46 +91,46 @@
         <div class="content-header">
 
           <h3>{{ current_content.module.title }} ({{ current_position }}/{{ current_total_contents }})</h3>
-          <h4 style="font-weight:normal;">{{ current_content.item.title }}</h4>        
+          <h4 style="font-weight:normal;">{{ current_content.item.title }}</h4>
           <div class="content-previous-next-buttons">
-            
+
             {% if previous_content %}
-  
-              <a href="{% url 'student:course_lessons' slug=previous_content.module.course.slug content_id=previous_content.id %}">                
+
+              <a href="{% url 'student:course_lessons' slug=previous_content.module.course.slug content_id=previous_content.id %}">
                 <button type="submit"><i class="fa-solid fa-angle-left"></i></button>
-              </a>   
-  
+              </a>
+
             {% endif %}
-                          
+
             {% if next_content %}
-              
-              <a href="{% url 'student:course_lessons' slug=next_content.module.course.slug  content_id=next_content.id %}">                
+
+              <a href="{% url 'student:course_lessons' slug=next_content.module.course.slug  content_id=next_content.id %}">
                 <button type="submit"><i class="fa-solid fa-angle-right"></i></button>
               </a>
-  
+
             {% endif %}
-              
+
           </div>
 
         </div>
 
 
         <div class="content-display">
-          
+
           {% with type=current_content.content_type.model url=current_content.item.file.url %}
 
             {% if current_content.content_type.model == "video" %}
 
-              <video src="{{ url }}" autoplay controls muted loop></video>     
+              <video src="{{ url }}" autoplay controls muted loop></video>
 
             {% elif current_content.content_type.model == "file" %}
 
               <p><strong>Archivo disponible para descarga</strong></p>
               <a href="{{ url }}" class="button" download>Descargar</a>
-              
+
             {% elif current_content.content_type.model == "image" %}
 
-              <img src="{{ url }}" alt="Imagen de: {{current_content.item.title}}" width="100%" height="100%">         
+              <img src="{{ url }}" alt="Imagen de: {{current_content.item.title}}" width="100%" height="100%">
 
             {% elif current_content.content_type.model == "text" %}
               <div class="text-content">
@@ -139,18 +139,18 @@
             {% endif %}
 
           {% endwith %}
-            
+
         </div>
 
         <form action="{% url 'student:content_mark_complete' content_id=current_content.id  %}" method="post">
           {% csrf_token %}
-          
+
           {% if current_content.id not in completed_ids %}
             <div class="bottom-bar">
-              <button type="submit" class="btn-complete">Marcar como completado y continuar</button>
+              <button type="submit" class="btn-complete">Marcar como completado y continuar {% if current_position == current_total_contents %}al siguiente modulo{% endif %}</button>
             </div>
           {% endif %}
-            
+
         </form>
 
       {% else %}

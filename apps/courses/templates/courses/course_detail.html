@@ -76,7 +76,11 @@
             <div class="card-banner">
               <div class="tag">{{ course.level }}</div>
               <img src="{% if course.image %}{{ course.image }}{% else %}https://placehold.co/600x200/1e1e1e/ffffff?text={{ course.title }}{% endif %}" alt="{{ course.title }}" />
-              <img class="author-avatar" src="{{ course.owner.instructor_profile.photo }}" alt="{{ course.owner.get_full_name }}">
+              {% if course.owner.photo %}
+                <img class="author-avatar" src="{{ course.owner.photo.url }}" alt="{{ course.owner.get_full_name }}">
+              {% else %}
+                <img class="author-avatar" src="https://static.vecteezy.com/system/resources/previews/009/292/244/non_2x/default-avatar-icon-of-social-media-user-vector.jpg" alt="{{ course.owner.get_full_name }}">                              
+              {% endif %}
             </div>
             <div class="card-body">
               <h1>{{ course.title }}</h1>

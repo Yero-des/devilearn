@@ -21,12 +21,12 @@ class UserAdmin(BaseUserAdmin):
     list_display = BaseUserAdmin.list_display + ('is_instructor',)
     fieldsets = BaseUserAdmin.fieldsets + (
         ('Rol personalizado', {
-            'fields': ('is_instructor',)
+            'fields': ('is_instructor', 'photo', 'company', 'professional_title', 'time_zone')
         }),
     )
     add_fieldsets = BaseUserAdmin.add_fieldsets + (
         (None, {
-            'fields': ('is_instructor',)
+            'fields': ('is_instructor', 'photo', 'company', 'professional_title', 'time_zone')
         }),
     )    
 

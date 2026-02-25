@@ -8,6 +8,9 @@ class Module(models.Model):
     description = models.TextField()
     order = OrderField(blank=True, for_fields=['course'])
     
+    class Meta:
+        ordering = ['order']
+    
     def __str__(self):
         return f"{self.course.title} - {self.title}"    
     
