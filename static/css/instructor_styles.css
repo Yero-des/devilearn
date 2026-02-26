@@ -214,3 +214,6 @@ form button {
     margin: 0;
 }
 
+.settings-form p input {
+    width: 100%;
+}

@@ -83,3 +83,13 @@ body {
 .form-footer > a:hover {
     color: #3b82f6;
 }
+
+.error-messages ul{
+    padding-left: 0;
+}
+
+.error {
+    list-style: none;
+    color: #e61919;
+    font-size: 12px;
+}
