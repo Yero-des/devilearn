@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Profile{% endblock title %}
+
+{% block custom_styles %}
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  {% if layout_type == "instructor" %}
+    <link rel="stylesheet" href="{% static 'css/instructor_styles.css' %}">
+  {% endif %}
+{% endblock custom_styles %}
+
+{% block content %}
+
+  <div class="layout">
+
+    {% if layout_type == "instructor" %}
+      {% include "includes/sidebar_instructor.html" %}
+    {% else %}
+      {% include "includes/sidebar.html" %}
+    {% endif %}
+
+    <div class="main-content">
+
+      {% if layout_type == "instructor" %}
+        {% include "includes/header_instructor.html" %}
+      {% else %}
+        {% include "includes/header.html" %}
+      {% endif %}
+
+      <!-- Aquí va el contenido de la página -->
+      <main>
+
+        {% if messages %}
+          <div class="messages">
+            
+            {% for message in messages %}
+              <div class="alert alert-{{message.tags}}">
+                {{ message }}
+              </div>
+            {% endfor %}
+              
+          </div>
+        {% endif %}
+
+        <div>
+          <h2>Soporte</h2>
+          <form method="post" class="form-support">
+            {% csrf_token %}
+            <div class="form-group">
+              <label for="{{ form.subject.id_for_label }}">Asunto</label>
+              {{ form.subject }}
+              {{ form.subject.errors }}
+            </div>
+            <div class="form-group">
+              <label for="{{ form.message.id_for_label }}">Mensaje</label>
+              {{ form.message }}
+              {{ form.message.errors }}
+            </div>
+            <button type="submit" class="submit-btn">Enviar email</button>
+          </form>
+        </div>
+
+      </main>
+    </div>
+
+  </div>
+
+{% endblock content %}

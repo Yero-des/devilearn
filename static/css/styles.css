@@ -667,7 +667,7 @@ a.btn {
     padding: 5px;
 }
 
-.settings-form p input {
+.settings-form p input, .settings-form p textarea {
     width: 50%;
     border: 1px solid #555;
     padding: 0.6rem;
@@ -752,4 +752,17 @@ a.btn {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+.form-support .form-group {
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+}
+
+.form-support .form-group input, 
+.form-support .form-group textarea {
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin: 5px 0px;
 }
