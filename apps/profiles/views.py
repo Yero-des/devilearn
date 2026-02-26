@@ -1,27 +1,53 @@
 from django.shortcuts import render
-from django.views.generic import UpdateView
+from django.views.generic import UpdateView, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import User
+from django.contrib.auth.views import PasswordChangeView
+from django.contrib.messages.views import SuccessMessageMixin
+from .models import Profile
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
+from .forms import ProfileForm, CustomRegisterForm
+from django.contrib import messages
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login
+from django.shortcuts import redirect
 
-# Create your views here.
-def index(request):
-    return render(request, "profiles/profile.html", {
-        
-    })
 
-class ProfileDetailView(LoginRequiredMixin, UpdateView):
-    model = User
+class ProfileUpdateView(LoginRequiredMixin, UpdateView):
+    model = Profile
     template_name = 'profiles/profile.html'    
-    fields = ['email', 'photo', 'first_name', 'last_name',
-              'company', 'professional_title', 'time_zone']
-    context_object_name = 'user'
+    form_class = ProfileForm
+    success_url = reverse_lazy('profile')
+    context_object_name = 'profile'
     
-    def get_queryset(self):
-        return super().get_queryset().filter(id=self.request.user.id)
+    def get_object(self, queryset = None):        
+        return self.request.user.profile
     
-    def get_success_url(self):
-        return reverse_lazy('profile', kwargs={
-            'pk': self.object.id
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({
+            'user': self.request.user
         })
+        return kwargs    
+    
+    def form_valid(self, form):
+        messages.success(self.request, "Tu perfil se ha actualizado correctamente.")
+        return super().form_valid(form)
+    
+    
+class CustomPasswordChangeView(LoginRequiredMixin, SuccessMessageMixin, PasswordChangeView):
+    template_name = 'settings/change_password.html'
+    success_url = reverse_lazy('change_password')
+    success_message = "Contraseña actualizada correctamente"
+    
+    
+class RegisterView(CreateView):
+    form_class = CustomRegisterForm
+    template_name = 'registration/register.html'
+    success_url = reverse_lazy('student:course_list')
+    
+    def form_valid(self, form):
+        user = form.save()
+        login(self.request, user)        
+        return redirect(self.success_url)
+    

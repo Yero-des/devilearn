@@ -6,7 +6,7 @@ class RedirectAuthenticatedMiddleware:
         self.get_response = get_response
         
     def __call__(self, request):
-        protected_paths = [reverse('login')]
+        protected_paths = [reverse('login'), reverse('register')]
         
         response = self.get_response(request)
         

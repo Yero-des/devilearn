@@ -4,75 +4,87 @@
 {% block title %}Profile{% endblock title %}
 
 {% block custom_styles %}
-  <link rel="stylesheet" href="{% static "css/styles.css" %}">
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  {% if layout_type == "instructor" %}
+    <link rel="stylesheet" href="{% static 'css/instructor_styles.css' %}">
+  {% endif %}
 {% endblock custom_styles %}
 
 {% block content %}
 
   <div class="layout">
 
-    {% include "includes/sidebar.html" %}
+    {% if layout_type == "instructor" %}
+      {% include "includes/sidebar_instructor.html" %}
+    {% else %}
+      {% include "includes/sidebar.html" %}
+    {% endif %}
 
-        <!-- Main content -->
     <div class="main-content">
 
-      {% include "includes/header.html" %}
+      {% if layout_type == "instructor" %}
+        {% include "includes/header_instructor.html" %}
+      {% else %}
+        {% include "includes/header.html" %}
+      {% endif %}
 
-            <!-- Aquí va el contenido de la página -->
+      <!-- Aquí va el contenido de la página -->
       <main>
-        <div class="profile-container">
-          <div class="profile-picture">
+
+        {% if messages %}
+          <div class="messages">
             
-            {% if user.photo %}
-              <img src="{{ user.photo.url }}" alt="Foto de perfil de {{ user.get_full_name }}">              
-            {% else %}
-              <img src="https://static.vecteezy.com/system/resources/previews/009/292/244/non_2x/default-avatar-icon-of-social-media-user-vector.jpg" alt="Foto de perfil">
-            {% endif %}
+            {% for message in messages %}
+              <div class="alert alert-{{message.tags}}">
+                {{ message }}
+              </div>
+            {% endfor %}
               
+          </div>
+        {% endif %}
+
+        <div class="profile-container">
+          
+          <div class="profile-picture">              
+            <img src="{{ profile_picture }}" alt="Foto de perfil">              
             <label for="fileUpload">Cargar nueva imagen</label>
-            <input type="file" id="fileUpload" style="display: none;" form="profileForm" name="{{ form.photo.name}}" >
+            {{ form.photo }}
           </div>
 
           <form id="profileForm" class="profile-form" enctype="multipart/form-data" method="post">
             {% csrf_token %}
-
+            
             <h2>Editar perfil</h2>
 
             <div class="input-group">
-              <label for="email">Correo electrónico</label>
-              <input type="email" id="email" value="{{ form.email.value }}" name="{{ form.email.name }}">
+              {{ form.email.label_tag }}
+              {{ form.email }}
             </div>
 
             <div class="input-row">
               <div class="input-group">
-                <label for="nombre">Nombre</label>
-                <input type="text" id="nombre" value="{{ form.first_name.value }}" name="{{ form.first_name.name }}">
+                {{ form.first_name.label_tag }}
+                {{ form.first_name }}
               </div>
               <div class="input-group">
-                <label for="apellido">Apellido</label>
-                <input type="text" id="apellido" value="{{ form.last_name.value }}" name="{{ form.last_name.name }}">
+                {{ form.last_name.label_tag }}
+                {{ form.last_name }}
               </div>
             </div>
 
             <div class="input-group">
-              <label for="compania">Compañía</label>
-              <input type="text" id="compania" value="{{ form.company.value }}" name="{{ form.company.name }}">
+              {{ form.company.label_tag }}
+              {{ form.company }}
             </div>
 
             <div class="input-group">
-              <label for="titulo">Título profesional</label>
-              <input type="text" id="titulo" value="{{ form.professional_title.value }}" name="{{ form.professional_title.name }}">
+              {{ form.profession.label_tag }}
+              {{ form.profession }}
             </div>
             
             <div class="input-group">
-              <label for="zona">Zona horaria</label>
-              <select id="zona" value="{{ form.time_zone.value }}" name="{{ form.time_zone.name }}">
-                <option value="">Seleccione su zona horaria</option>
-                <option value="UTC-6" {% if form.time_zone.value == "UTC-6" %}selected{% endif %}>UTC-6 Ciudad de México</option>
-                <option value="UTC-5" {% if form.time_zone.value == "UTC-5" %}selected{% endif %}>UTC-5 Bogotá</option>
-                <option value="UTC-4" {% if form.time_zone.value == "UTC-4" %}selected{% endif %}>UTC-5 Lima</option>
-                <option value="UTC-3" {% if form.time_zone.value == "UTC-3" %}selected{% endif %}>UTC-3 Buenos Aires</option>
-              </select>
+              {{ form.timezone.label_tag }}
+              {{ form.timezone }}
             </div>
 
             <button type="submit" class="submit-btn">Guardar cambios</button>

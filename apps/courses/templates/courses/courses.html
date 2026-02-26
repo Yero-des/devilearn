@@ -42,11 +42,7 @@
 
                     <h3 class="course-title">{{ course.title }}</h3>
                     <div class="author">
-                      {% if course.owner.photo %}
-                        <img src="{{ course.owner.photo.url }}" alt="{{ course.owner.get_full_name }}">
-                      {% else %}
-                        <img src="https://static.vecteezy.com/system/resources/previews/009/292/244/non_2x/default-avatar-icon-of-social-media-user-vector.jpg" alt="{{ course.owner.get_full_name }}">                              
-                      {% endif %}
+                      <img src="{{ course.owner.profile.photo_url }}" alt="{{ course.owner.get_full_name }}">        
                       <span>{{ course.owner.get_full_name }}</span>
                     </div>
                   </div>

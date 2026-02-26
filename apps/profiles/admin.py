@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.conf import settings
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from .models import User, InstructorProfile
+from .models import User, InstructorProfile, Profile
 from apps.courses.admin import Enrollment
 
 # Register your models here.
@@ -21,14 +21,19 @@ class UserAdmin(BaseUserAdmin):
     list_display = BaseUserAdmin.list_display + ('is_instructor',)
     fieldsets = BaseUserAdmin.fieldsets + (
         ('Rol personalizado', {
-            'fields': ('is_instructor', 'photo', 'company', 'professional_title', 'time_zone')
+            'fields': ('is_instructor',)
         }),
     )
     add_fieldsets = BaseUserAdmin.add_fieldsets + (
         (None, {
-            'fields': ('is_instructor', 'photo', 'company', 'professional_title', 'time_zone')
+            'fields': ('is_instructor',)
         }),
     )    
+
+@admin.register(Profile)
+class ProfileAdmin(admin.ModelAdmin):
+    list_display = ('user', 'company', 'profession', 'timezone', 'photo')
+    
 
 @admin.register(InstructorProfile)
 class InstructorProfileAdmin(admin.ModelAdmin):

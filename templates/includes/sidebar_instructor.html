@@ -13,9 +13,9 @@
 
   </ul>
   <ul class="bottom-menu">
-    <li><a class="menu-option" href="{% url 'profile' pk=request.user.id %}"><i class="fa-solid fa-user icon"></i><span>Perfil</span></a>
+    <li><a class="menu-option" href="{% url 'profile' %}?from=instructor"><i class="fa-solid fa-user icon"></i><span>Perfil</span></a>
     </li>
-    <li><a class="menu-option" href="#"><i class="fa-solid fa-gear icon"></i><span>Configuración</span></a>
+    <li><a class="menu-option" href="{% url 'change_password' %}?from=instructor"><i class="fa-solid fa-gear icon"></i><span>Configuración</span></a>
     </li>
     <li>
       <form class="form-logout" action="{% url 'logout' %}" method="post">
