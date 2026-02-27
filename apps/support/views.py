@@ -12,7 +12,7 @@ from django.core.mail import EmailMessage
 class SupportView(LoginRequiredMixin, FormView):
     template_name = 'support/support.html'
     form_class = SupportForm
-    success_url = reverse_lazy('support')
+    success_url = reverse_lazy('support')    
     
     def form_valid(self, form):
         user = self.request.user

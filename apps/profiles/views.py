@@ -11,6 +11,7 @@ from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from django.shortcuts import redirect
+from django.contrib.auth.views import LoginView
 
 
 class ProfileUpdateView(LoginRequiredMixin, UpdateView):
@@ -51,3 +52,12 @@ class RegisterView(CreateView):
         login(self.request, user)        
         return redirect(self.success_url)
     
+class CustomLoginView(LoginView):
+    
+    def get_success_url(self):
+        user = self.request.user
+        
+        if user.is_instructor:
+            return reverse_lazy('instructor:course_list')    
+        return reverse_lazy('student:course_list')
+        

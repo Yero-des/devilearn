@@ -4,14 +4,14 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.conf import settings
 from django.conf.urls.static import static
 from apps.dashboard.views import RedirectHomeView
-from apps.profiles.views import RegisterView
+from apps.profiles.views import RegisterView, CustomLoginView
 
 urlpatterns = [
     path('', RedirectHomeView.as_view()),
     path('admin/', admin.site.urls),
     path('dashboard/', include('apps.dashboard.urls')),
     path("profile/", include('apps.profiles.urls')),
-    path('login/', LoginView.as_view(), name="login"),
+    path('login/', CustomLoginView.as_view(), name="login"),
     path('logout/', LogoutView.as_view(), name="logout"),
     path('register/', RegisterView.as_view(), name='register'),
     path('instructor/', include('apps.courses.urls.instructor')),
