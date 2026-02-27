@@ -30,7 +30,7 @@ class SupportView(LoginRequiredMixin, FormView):
             'profession': profession
         }
         
-        body = render_to_string('support/emails/support_email.txt', info)
+        body = render_to_string('support/emails/support_email.html', info)
         # Atributo del settings.py
         to_email = getattr(settings, 'SUPPORT_INBOX', None)
         
@@ -44,9 +44,10 @@ class SupportView(LoginRequiredMixin, FormView):
                 body=body,
                 from_email=getattr(settings, "DEFAULT_FROM_EMAIL", None),
                 to=[to_email],
-                reply_to=[user.email] if user.email else None,
+                reply_to=[user.email] if user.email else None,                        
             )
             #   email.bcc = ['correo1@email.com', 'correo2@email.com']
+            email.content_subtype = 'html'
             email.send(fail_silently=False)
 
         except Exception as exc:
