@@ -694,6 +694,21 @@ a.btn {
     color: #e61919;
 }
 
+.form-support,
+.form-support .form-group {
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+}
+
+.form-support .form-group input,
+.form-support .form-group textarea {
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin: 5px 0px;
+    border: 1px solid #777;
+}
+
 /* Base alert */
 .alert {
     position: relative;

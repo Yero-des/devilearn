@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import FormView
@@ -19,7 +18,7 @@ class SupportView(LoginRequiredMixin, FormView):
         profile = getattr(user, 'profile', None)
         phone = getattr(profile, 'phone', '')
         company = getattr(profile, 'company', '')
-        profession = getattr(profile, 'profession', '')
+        profession = getattr(profile, 'profession', '')        
         
         info = {
             'subject': form.cleaned_data['subject'],

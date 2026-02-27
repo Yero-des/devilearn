@@ -1,32 +1,21 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Profile{% endblock title %}
+{% block title %}Support{% endblock title %}
 
 {% block custom_styles %}
   <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-  {% if layout_type == "instructor" %}
-    <link rel="stylesheet" href="{% static 'css/instructor_styles.css' %}">
-  {% endif %}
 {% endblock custom_styles %}
 
 {% block content %}
 
   <div class="layout">
 
-    {% if layout_type == "instructor" %}
-      {% include "includes/sidebar_instructor.html" %}
-    {% else %}
-      {% include "includes/sidebar.html" %}
-    {% endif %}
+    {% include "includes/sidebar.html" %}
 
     <div class="main-content">
 
-      {% if layout_type == "instructor" %}
-        {% include "includes/header_instructor.html" %}
-      {% else %}
-        {% include "includes/header.html" %}
-      {% endif %}
+      {% include "includes/header.html" %}
 
       <!-- Aquí va el contenido de la página -->
       <main>

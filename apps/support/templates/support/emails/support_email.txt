@@ -12,4 +12,4 @@ Profesión: {{ profession|default:"{sin registrar}"}}
 Télefono: {{ phone|default:"{sin registrar}"}}
 _____________________
 
-Enviado desde la sección de sporte del sitio.
+Enviado desde la sección de soporte del sitio.

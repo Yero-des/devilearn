@@ -9,17 +9,3 @@ def profile_picture(request):
     return {
         'profile_picture': "https://static.vecteezy.com/system/resources/previews/009/292/244/non_2x/default-avatar-icon-of-social-media-user-vector.jpg"
     }
-            
-            
-def layout_type(request):
-    layout_type = ''
-    if request.user.is_authenticated and request.user.is_instructor:
-        layout_type = request.GET.get('from')
-    
-        return {
-            'layout_type': layout_type
-        }
-        
-    return {
-        'layout_type': layout_type
-    }

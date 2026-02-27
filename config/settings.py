@@ -14,10 +14,13 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-load_dotenv(BASE_DIR / '.env')
+# Builds env variables
+load_dotenv(BASE_DIR / '.env', override=True)
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
@@ -72,8 +75,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'apps.profiles.context_processors.profile_picture',
-                'apps.profiles.context_processors.layout_type'
+                'apps.profiles.context_processors.profile_picture'
             ],
         },
     },
@@ -143,8 +145,8 @@ LOGIN_URL = "login"
 EMAIL_BACKEND = os.getenv('EMAIL_BACKEND', 'django.core.mail.backends.smtp.EmailBackend')
 EMAIL_HOST = os.getenv('EMAIL_HOST', '')
 EMAIL_PORT = int(os.getenv('EMAIL_PORT', '465'))
+EMAIL_USE_SSL = os.getenv('EMAIL_USER_SSL', 'false').lower() == 'true'
 EMAIL_USE_TLS = os.getenv('EMAIL_USER_TLS', 'true').lower() == 'true'
-EMAIL_USE_SSL = os.getenv('EMAIL_USER_TLS', 'false').lower() == 'true'
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
 DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'no-reply@devilearn.com')
