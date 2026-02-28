@@ -845,3 +845,17 @@ a.btn {
     border: 1px dashed #e5e7eb;
     border-radius: 8px;
 }
+
+.course-profile-photo {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.course-profile-photo img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+

@@ -56,7 +56,9 @@
 
                     <h3 class="course-title">{{ course.title }}</h3>
                     <div class="author">
-                      <img src="{{ course.owner.profile.photo_url }}" alt="{{ course.owner.get_full_name }}">        
+                      <div class="course-profile-photo">
+                        <img src="{{ course.owner.profile.photo_url }}" alt="{{ course.owner.get_full_name }}">        
+                      </div>
                       <span>{{ course.owner.get_full_name }}</span>
                     </div>
                   </div>

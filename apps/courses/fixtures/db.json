@@ -640,7 +640,7 @@
         "fields": {
             "owner": 1,
             "title": "CI/CD con GitHub Actions",
-            "slug": "ci/cd-con-github-actions",
+            "slug": "ci-cd-con-github-actions",
             "overview": "Curso sobre CI/CD con GitHub Actions desde cero hasta avanzado.",
             "created_at": "2025-07-08",
             "image": "https://import.cdn.thinkific.com/643563/a51yLvxNTUiTs5FbiBsx_COVER-DEVTALLES2.jpeg",
