@@ -11,13 +11,20 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 class CourseListView(LoginRequiredMixin, ListView):
     model = Course
     template_name = 'courses/courses.html'
-    paginate_by = 8
+    paginate_by = 4
     context_object_name = 'courses'
     
     def get_queryset(self):
-        
-        courses = super().get_queryset()
+                
         query = self.request.GET.get('q')
+        filter_type = self.request.GET.get('filter', 'all')
+        
+        if filter_type == 'enrolled':
+            courses = Course.objects.filter(enrollment__user=self.request.user)
+        elif filter_type == 'not_enrolled':
+            courses = Course.objects.exclude(enrollment__user=self.request.user)
+        else:
+            courses = super().get_queryset()
         
         if query: 
             courses = courses.filter(
@@ -32,15 +39,18 @@ class CourseListView(LoginRequiredMixin, ListView):
         
         query_params: list = self.request.GET.copy()
         query = self.request.GET.get('q')
+        filter_type = self.request.GET.get('filter', 'all')
     
         if "page" in query_params:
             query_params.pop("page")
         
         query_string = query_params.urlencode()  
+        print(query_string)
         
         context.update({
             'query': query,
-            'query_string': query_string
+            'query_string': query_string,
+            'filter_type': filter_type,
         }) 
         
         return context

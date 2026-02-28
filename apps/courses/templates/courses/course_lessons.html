@@ -27,7 +27,7 @@
   <!-- HEADER SUPERIOR -->
   <header class="topbar">
     <div class="acciones">
-      <div class="back-link"> <a href="{% url 'student:course_detail' slug=course_slug %}" class="discusiones">&larr; Ve al panel de control</a></div>
+      <div class="back-link"> <a href="{% url 'student:course_detail' slug=course_slug %}" class="discusiones">&larr; Ve a detalles del curso</a></div>
 
     </div>
     <div class="logo"><img src="{% static 'images/devilearn.png' %}" alt="Logo devilearn"></div>
@@ -73,6 +73,12 @@
 
               </ul>
             </div>
+          </div>
+
+        {% empty %}
+          
+          <div>
+            <p>Sin contenido aún</p>
           </div>
 
         {% endfor %}
