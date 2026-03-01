@@ -379,7 +379,7 @@ i.fa-solid.fa-star {
     border-radius: 20px;
 }
 
-.card-banner img:first-of-type {
+.card-banner > img {
     width: 100%;
     height: 180px;
     object-fit: contain;
@@ -395,7 +395,15 @@ i.fa-solid.fa-star {
     right: 16px;
     border: 2px solid #1d1438;
     background: white;
+    overflow: hidden;
 }
+
+.author-avatar > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
 
 .card-body {
     padding: 2.5rem 1.5rem 1.5rem;

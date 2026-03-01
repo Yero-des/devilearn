@@ -11,7 +11,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 class CourseListView(LoginRequiredMixin, ListView):
     model = Course
     template_name = 'courses/courses.html'
-    paginate_by = 4
+    paginate_by = 8
     context_object_name = 'courses'
     
     def get_queryset(self):
