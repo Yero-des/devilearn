@@ -88,7 +88,13 @@
               </ul>
 
               <a class="btn bnt-primary btn-course {% if is_enrolled %}enrolled{% endif %}" 
-              href="{% url 'student:course_lessons' slug=course.slug %}">
+              {% if is_enrolled %}                
+                href="{% url 'student:course_lessons' slug=course.slug %}"
+              {% else %}
+                href="javascript:void(0)"
+                onclick="confirmEnrollment('{% url 'student:course_lessons' slug=course.slug %}')"
+              {% endif %}
+              >
                 {% if is_enrolled %}
                   Continuar aprendiendo
                 {% else %}
@@ -106,6 +112,8 @@
 
 {% endblock content %}
 
-{% block scripts %}
-  <script src="{% static 'js/script.js' %}"></script>
+{% block scripts %}  
+  <script src="{% static 'js/script.js' %}"></script>  
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="{% static 'instructor/js/sweet-alert.js' %}"></script>
 {% endblock scripts %}

@@ -2,6 +2,9 @@
 venv/
 env/
 
+# Modulos npm
+node_modules/
+
 # Archivos de Python compilados
 __pycache__/
 /__pycache__/

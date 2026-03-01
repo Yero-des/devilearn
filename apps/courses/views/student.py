@@ -68,10 +68,14 @@ class CourseDetailView(LoginRequiredMixin, DetailView):
         
         modules = self.object.modules.prefetch_related('contents').order_by('order')        
         total_contents = sum(module.contents.count() for module in modules )
+        is_enrolled = Enrollment.objects.filter(user=self.request.user, course=self.object).exists()
+                
+        context.update({
+            'modules': modules,
+            'total_contents': total_contents,
+            'is_enrolled': is_enrolled
+        })
         
-        context["modules"] = modules
-        # context["contents"] = contents
-        context["total_contents"] = total_contents
         return context
     
 
