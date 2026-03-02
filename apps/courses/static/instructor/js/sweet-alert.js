@@ -9,6 +9,7 @@ function confirmEnrollment(url) {
         confirmButtonText: 'Sí, inscribirme',
         cancelButtonText: 'Cancelar',
         reverseButtons: true,
+        theme: 'auto',
     }).then((result) => {
         if (result.isConfirmed) {
             window.location.href = url;
