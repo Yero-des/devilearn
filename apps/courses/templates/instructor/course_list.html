@@ -45,20 +45,35 @@
           {% if is_paginated %}
             <div class="paginator">
 
+
               {% if page_obj.has_previous %}
-                <a href="?page=1">Primera</a>
-                <a href="?page={{page_obj.previous_page_number}}">Anterior</a>
+
+                <a class="page-btn" href="?page=1&{{query_string}}">Primera</a>
+                <a class="page-btn" href="?page={{page_obj.previous_page_number}}&{{query_string}}">Anterior</a>
+              
+              {% else %}
+
+                <span class="page-btn disabled" aria-disabled="true">Primera</span>
+                <span class="page-btn disabled" aria-disabled="true">Anterior</span>
+                
               {% endif %}
-              <span>Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }} </span>
+                
+                <span class="page-info">Pagina {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
+                
               {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.next_page_number }}">Siguiente</a>
-                <a href="?page={{ page_obj.paginator.num_pages }}">Ultima</a>
+              
+                <a class="page-btn" href="?page={{page_obj.next_page_number}}&{{query_string}}">Siguiente</a>
+                <a class="page-btn" href="?page={{page_obj.paginator.num_pages}}&{{query_string}}">Ultima</a>
+
+              {% else %}
+
+                <span class="page-btn disabled" aria-disabled="true">Siguiente</span>
+                <span class="page-btn disabled" aria-disabled="true">Ultima</span>
+
               {% endif %}
 
             </div>
           {% endif %}
-
-
 
         </div>
 

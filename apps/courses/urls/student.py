@@ -6,12 +6,14 @@ app_name = "student"
 urlpatterns = [
     path('courses/',
         student.CourseListView.as_view(), name="course_list"),
-    path('detail/<str:slug>', 
+    path('detail/<str:slug>/', 
         student.CourseDetailView.as_view(), name="course_detail"),
     path('<str:slug>/lessons/', 
         student.CourseLessonsView.as_view(), name="course_lessons"),
     path('<str:slug>/lessons/<int:content_id>/', 
         student.CourseLessonsView.as_view(), name="course_lessons"),
-    path('content/<int:content_id>/complete',
-        student.MarkCompleteView.as_view(), name="content_mark_complete")
+    path('content/<int:content_id>/complete/',
+        student.MarkCompleteView.as_view(), name="content_mark_complete"),
+    path('<slug:slug>/review/', 
+        student.ReviewCourseCreateView.as_view(), name="review_course"),
 ]

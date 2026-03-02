@@ -1,11 +1,14 @@
 from django.shortcuts import redirect, render
+from django.urls import reverse_lazy
 from django.http import HttpResponse
-from ..models import Course, Enrollment, CompletedContent, Content, Progress, Module
-from django.db.models import Q, Max
+from ..forms import ReviewForm
+from ..models import Course, Enrollment, CompletedContent, Content, Progress, Module, Review
+from django.db.models import Q, Avg, Count, Max
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404
-from django.views.generic import ListView, DetailView, View
+from django.views.generic import ListView, DetailView, View, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib import messages
 
 # Course
 class CourseListView(LoginRequiredMixin, ListView):
@@ -189,4 +192,81 @@ class MarkCompleteView(LoginRequiredMixin, View):
                 return redirect('student:course_lessons', slug=content.module.course.slug, content_id=next_module_contents.id)
         
         return redirect('student:course_lessons', slug=content.module.course.slug)
+  
+  
+def user_is_enrolled(user, course: Course) -> bool:
+    is_enrolled = Enrollment.objects.filter(
+        user=user, course=course).exists()
+    return is_enrolled or user.is_staff
+
+class ReviewCourseCreateView(LoginRequiredMixin, CreateView):
+    model = Review
+    form_class = ReviewForm
+    template_name = 'courses/review_course.html'
     
+    def get_success_url(self):
+        return reverse_lazy(
+            'student:course_detail',
+            kwargs={'slug': self.course.slug}
+        )
+    
+    def dispatch(self, request, *args, **kwargs):    
+        self.course = get_object_or_404(Course, slug=self.kwargs['slug'])        
+        if not user_is_enrolled(self.request.user, self.course):
+            messages.error(
+                self.request, "Debes estar inscrito en el curso para evaluarlo.")
+            return redirect('student:course_detail', slug=self.course.slug)
+        
+        self.review = Review.objects.filter(
+            user=request.user,
+            course=self.course
+        ).first()        
+        self.is_update = self.review is not None
+
+        return super().dispatch(request, *args, **kwargs)
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
+        context.update({
+            'course': self.course,
+            'is_update': self.is_update
+        })
+        
+        return context
+    
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        
+        if self.is_update:
+            kwargs['instance'] = self.review
+            
+        return kwargs
+    
+    def get_object(self, queryset = None):
+        return self.review
+    
+    def form_valid(self, form):
+        form.instance.course = self.course
+        form.instance.user = self.request.user
+
+        response = super().form_valid(form)
+
+        reviews = (
+            Review.objects
+            .filter(course=self.course)
+            .select_related('user')
+        )
+
+        stats = reviews.aggregate(
+            avg=Avg("rating"),
+            total=Count("id")
+        )
+
+        self.course.rating = stats['avg'] or 0
+        self.course.save(update_fields=['rating'])
+
+        message = "Gracias por tu reseña" if not self.is_update else "Reseña actualizada"
+        messages.success(self.request, message)
+
+        return response

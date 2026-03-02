@@ -867,3 +867,96 @@ a.btn {
     object-fit: cover;
 }
 
+.course-reviews {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: #fff;
+    border-radius: .75rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    font-family: system-ui, sans-serif;
+}
+
+.course-reviews h3 {
+    margin-top: 1.5rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: .5rem;
+}
+
+.rating-stats {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.rating-stats p {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.rating-stats .stars {
+    font-size: 1.25rem;
+    color: #f5b301;
+    /* amarillo dorado para estrellas llenas */
+}
+
+.rating-stats .stars:empty {
+    color: #ccc;
+}
+
+.reviews {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0 0;
+}
+
+.review {
+    padding: 1rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+.review:last-child {
+    border-bottom: none;
+}
+
+.review-head {
+    display: flex;
+    align-items: center;
+    /* justify-content: space-between; */
+    gap: .5rem;
+    flex-wrap: wrap;
+}
+
+.review-head strong {
+    font-weight: 600;
+    color: #111;
+}
+
+.review-stars {
+    font-size: 1rem;
+    color: #f5b301;
+}
+
+.review-head small {
+    color: #888;
+    font-size: .875rem;
+}
+
+.review p {
+    margin: .5rem 0 0;
+    line-height: 1.4;
+    color: #444;
+}
+
+.dashboard-course .course-card .course-card__image {
+    width: 70%;
+}
+
+.profile-info p {
+    font-weight: 600;
+    font-size: 18px;
+    padding: 5px 0px;
+}
