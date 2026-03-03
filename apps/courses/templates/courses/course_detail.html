@@ -107,6 +107,75 @@
             </div>
           </div>
         </div>
+
+        <div class="course-reviews">
+          <div class="rating-stats">
+            
+            {% if stats.total %}
+              <p>
+                Promedio: {{ stats.avg|floatformat:1 }} / 5
+                &middot; {{ stats.total }} {{ stats.total|pluralize:"reseña,reseñas"}}
+              </p>
+              <div class="stars">
+                {% with rounded=stats.avg|floatformat:0 %}
+                  
+                  {% for i in "12345" %}
+                    
+                    {% if i <= rounded %}
+                      ★
+                    {% else %}
+                      ☆
+                    {% endif %}
+                                          
+                  {% endfor %}
+                    
+                {% endwith %}
+              </div>
+            {% else %}
+              <p>Este curso aún no tiene reseñas.</p>
+            {% endif %}
+              
+          </div>
+
+          <h3>Reseñas</h3>
+          <ul class="reviews">
+            
+            {% for review in reviews %}
+              <li class="review">
+                
+                <div class="review-head">
+                  <strong>{{ review.user.get_full_name|default:review.user.username }}</strong>
+                  <span class="review-stars">
+                    
+                    {% for i in "12345" %}
+                      
+                      {% if forloop.counter <= review.rating %}
+                        ★
+                      {% else %}
+                        ☆
+                      {% endif %}
+                        
+                    {% endfor %}
+                      
+                  </span>
+                  <small>{{ review.created_at|date:"d M Y H:i" }}</small>
+                </div>
+                
+                {% if review.comment %}
+                  <p>{{ review.comment|linebreaksbr }}</p>
+                {% endif %}
+                  
+              </li>
+            {% empty %}
+
+              <li>No hay reseñas todavía.</li>
+
+            {% endfor %}
+              
+          </ul>
+
+        </div>
+
       </main>
 
     </div>

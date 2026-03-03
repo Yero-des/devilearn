@@ -72,11 +72,18 @@ class CourseDetailView(LoginRequiredMixin, DetailView):
         modules = self.object.modules.prefetch_related('contents').order_by('order')        
         total_contents = sum(module.contents.count() for module in modules )
         is_enrolled = Enrollment.objects.filter(user=self.request.user, course=self.object).exists()
+        
+        reviews = (Review.objects.filter(course=self.object).select_related(
+            'user').order_by('-created_at'))
+        
+        stats = reviews.aggregate(avg=Avg('rating'), total=Count('id'))
                 
         context.update({
             'modules': modules,
             'total_contents': total_contents,
-            'is_enrolled': is_enrolled
+            'is_enrolled': is_enrolled,
+            'stats': stats,
+            'reviews': reviews,
         })
         
         return context

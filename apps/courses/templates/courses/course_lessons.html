@@ -84,7 +84,15 @@
         {% endfor %}
 
       </div>
-
+      
+      {% if progress >= 50.0 %}
+        <div class="course-actions">
+          <a href="{% url 'student:review_course' slug=course.slug %}" class="btn btn-primary">
+            Evaluar curso
+          </a>
+        </div>
+      {% endif %}
+        
     </aside>
 
     <!-- CONTENIDO PRINCIPAL (VIDEO) -->
