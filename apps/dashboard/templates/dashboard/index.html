@@ -4,7 +4,7 @@
 {% block title %}Dashboard{% endblock title %}
 
 {% block custom_styles %}
-  <link rel="stylesheet" href="{% static "css/styles.css" %}">
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 {% endblock custom_styles %}
 
 {% block content %}
@@ -19,12 +19,14 @@
 
       {% include "includes/header.html" %}
 
-            <!-- Aquí va el contenido de la página -->
+      <!-- Aquí va el contenido de la página -->
       <main>
-        <h1>¡Hola, Ricardo!</h1>
+        <h1>¡Hola, {{ request.user.first_name|default:request.user.username }}!</h1>
         <p></p>
         <section class="content">
+
           <div class="cards">
+
             <a href="">
               <div class="card">
                 <h3>Continuar viendo</h3>
@@ -33,6 +35,26 @@
             <a href="">
               <div class="card">
                 <h3>Cursos </h3>
+                <div class="dashboard-course">
+                  
+                  {% for course in courses %}
+                    
+                    <article class="course-card" aria-label="Curso: {{course.title}}">
+                      <a href="{% url 'student:course_detail' slug=course.slug %}">
+                        <img src="{{course.image}}" alt="Imagen del curso {{course.title}}" class="course-card__image" loading="lazy">
+                        <div class="course-card__body">
+                          <h3 class="course-card__title">
+                            <a href="{% url 'student:course_detail' slug=course.slug %}">{{ course.title }}</a>
+                          </h3>
+                        </div>
+                      </a>
+                    </article>
+
+                  {% empty %}
+                    <p>No tienes cursos aún.</p>
+                  {% endfor %}
+                    
+                </div>
               </div>
             </a>
             <a href="">
@@ -40,7 +62,6 @@
                 <h3>Perfil</h3>
               </div>
             </a>
-
 
           </div>
         </section>
