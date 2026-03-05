@@ -99,8 +99,15 @@ class CourseLessonsView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         
-        course = self.object
+        course: Course = self.object
         modules = course.modules.prefetch_related('contents').order_by('order')
+        
+        # Guardar sesión
+        self.request.session['last_course_slug'] = course.slug
+        self.request.session['last_course_title'] = course.title
+        self.request.session['last_course_image'] = course.image
+        
+        self.request.session.modified = True
         
         # Enrollment
         Enrollment.objects.get_or_create(user=self.request.user, course=course)

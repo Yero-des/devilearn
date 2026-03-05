@@ -27,41 +27,62 @@
 
           <div class="cards">
 
-            <a href="">
-              <div class="card">
-                <h3>Continuar viendo</h3>
-              </div>
-            </a>
-            <a href="">
-              <div class="card">
-                <h3>Cursos </h3>
-                <div class="dashboard-course">
-                  
-                  {% for course in courses %}
-                    
-                    <article class="course-card" aria-label="Curso: {{course.title}}">
-                      <a href="{% url 'student:course_detail' slug=course.slug %}">
-                        <img src="{{course.image}}" alt="Imagen del curso {{course.title}}" class="course-card__image" loading="lazy">
-                        <div class="course-card__body">
-                          <h3 class="course-card__title">
-                            <a href="{% url 'student:course_detail' slug=course.slug %}">{{ course.title }}</a>
-                          </h3>
-                        </div>
-                      </a>
-                    </article>
-
-                  {% empty %}
-                    <p>No tienes cursos aún.</p>
-                  {% endfor %}
-                    
+            <div class="card">
+              <h3>Continuar viendo</h3>
+              
+              {% if last_course.slug %}
+                <div class="last-course">
+                  <a href="{% url 'student:course_lessons' slug=last_course.slug %}">
+                    <img src="{{ last_course.image }}" alt="{{ last_course.title }}" width="80%">
+                    <p>Continuar: {{ last_course.title }}</p>
+                  </a>
                 </div>
+              {% endif %}
+                
+
+            </div>   
+
+            <div class="card">
+              <h3>Cursos inscritos</h3>
+              <div class="dashboard-course">
+                
+                {% for course in courses %}
+                  <article class="course-card" aria-label="Curso: {{course.title}}">
+                    <a href="{% url 'student:course_detail' slug=course.slug %}" class="course-card__link">
+                      
+                      <img src="{{course.image}}" 
+                          alt="Imagen del curso {{course.title}}" 
+                          class="course-card__image" 
+                          loading="lazy">
+
+                      <div class="course-card__body">
+                        <h3 class="course-card__title">
+                          {{ course.title }}
+                        </h3>
+                      </div>
+
+                    </a>
+                  </article>
+                {% empty %}
+                  <p>No tienes cursos aún.</p>
+                {% endfor %}
+                  
               </div>
-            </a>
-            <a href="">
-              <div class="card">
-                <h3>Perfil</h3>
+            </div>
+
+            <div class="card">
+              <h3>Perfil</h3>
+              
+              <div class="profile-info">
+                <div class="profile-avatar-info">
+                  <img src="{{ profile.photo_url }}" alt="{{ profile.user.get_full_name }}">
+                </div>  
+                <p>Nombre: {{ profile.user.get_full_name|default:profile.user.username}}</p>
+                <p>Empresa: {{ profile.company|default:"-" }}</p>
+                <p>Profesión: {{ profile.profession|default:"-" }}</p>
               </div>
-            </a>
+              <a href="{% url 'profile' %}" class="btn">Ver perfil completo</a>
+            </div>
 
           </div>
         </section>
@@ -72,5 +93,5 @@
 {% endblock content %}
 
 {% block scripts %}
-  <script src="{% static "js/script.js" %}"></script>
+  <script src="{% static 'js/script.js' %}"></script>
 {% endblock scripts %}

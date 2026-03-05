@@ -965,11 +965,23 @@ a.btn {
 }
 
 .dashboard-course .course-card .course-card__image {
-    width: 100%;
+    width: 70%;
+    height: auto;
 }
 
 .profile-info p {
     font-weight: 600;
     font-size: 18px;
     padding: 5px 0px;
+}
+
+.profile-avatar-info {
+    height: 11rem;
+    width: fit-content;
+    overflow: hidden;
+    border-radius: 5px;
+}
+
+.profile-avatar-info > img {
+    height: 100%;
 }

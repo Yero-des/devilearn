@@ -1,7 +1,7 @@
 <div class="header" style="padding: 1rem;">
-  <form class="search-box" method="get">
-    <i class="fa-solid fa-magnifying-glass icon"></i>
-    <input type="text" placeholder="Buscar..." name="q" value="{% if query %}{{ query }}{% endif %}"/>
+  <form class="search-box" action="{% url 'student:course_list' %}" method="get">
+    <i class="fa-solid fa-magnifying-glass icon"></i>    
+    <input type="text" placeholder="Buscar..." name="q" value="{% if query %}{{ query }}{% endif %}"/>          
   </form>
   <div class="header-right">
     <div class="avatar">

@@ -14,9 +14,16 @@ class IndexTemplateView(LoginRequiredMixin, TemplateView):
         courses = Course.objects.filter(enrollment__user=self.request.user).order_by('?')[:3]
         profile = Profile.objects.get(user=self.request.user)
         
+        last_course = {
+            'slug': self.request.session.get('last_course_slug'),
+            'title': self.request.session.get('last_course_title'),
+            'image': self.request.session.get('last_course_image'),
+        }
+        
         context.update({
             'courses': courses,
-            'profile': profile
+            'profile': profile,
+            'last_course': last_course,
         })
         return context
    
