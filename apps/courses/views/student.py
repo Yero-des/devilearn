@@ -213,6 +213,7 @@ def user_is_enrolled(user, course: Course) -> bool:
         user=user, course=course).exists()
     return is_enrolled or user.is_staff
 
+
 class ReviewCourseCreateView(LoginRequiredMixin, CreateView):
     model = Review
     form_class = ReviewForm
