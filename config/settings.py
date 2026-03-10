@@ -31,7 +31,15 @@ SECRET_KEY = 'django-insecure-=w%soeso91@odpj1_ncmwcs)8f=onhbmrc&^k5i=2dralzcj*r
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['https://devilearn-71gg.onrender.com/']
+ALLOWED_HOSTS = [
+    os.getenv('PRODUCTION_URL'),
+    f'www.{os.getenv('PRODUCTION_URL')}'
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    f'https://{os.getenv('PRODUCTION_URL')}',
+    f'https://www.{os.getenv('PRODUCTION_URL')}',
+]
 
 
 # Application definition
