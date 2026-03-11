@@ -97,6 +97,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # python manage.py dumpdata --natural-primary --natural-foreign > data.json
 # python manage.py dumpdata --natural-primary --natural-foreign --exclude admin.logentry --output data.json
+# funciona: python -Xutf8 manage.py dumpdata --natural-primary --natural-foreign --output data.json
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
 # DATABASES = {
@@ -116,7 +117,6 @@ DATABASES = {
         conn_max_age=600
     )
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
